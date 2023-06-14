@@ -1,8 +1,9 @@
-using System.Collections.Immutable;
-using Bazar.Api.Models;
+// using Bazar.Core.Models;
+
+using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bazar.Api.Data;
+namespace Bazar.EF.Data;
 
 public class ApplicationDbContext : DbContext
 {
@@ -11,4 +12,5 @@ public class ApplicationDbContext : DbContext
     }
     
     public DbSet<User> Users { get; set; }
+    public DbSet<Product> Products { get; set; }
 }

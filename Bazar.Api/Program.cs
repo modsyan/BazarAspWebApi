@@ -1,16 +1,30 @@
-using Bazar.Api.Data;
 using Microsoft.CodeAnalysis.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Bazar;
+using Bazar.Api.Services;
+using Bazar.Api.Services.Interfaces;
+using Bazar.Core.Repositories;
+using Bazar.EF.Data;
+using Bazar.EF.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        optionsBuilder => optionsBuilder.MigrationsAssembly(
+            typeof(ApplicationDbContext).Assembly.FullName
+        )
+    )
+);
 
 builder.Services.AddCors();
+
+builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddTransient(typeof(IUserServices), typeof(UserService));
 
 builder.Services.AddControllers();
 

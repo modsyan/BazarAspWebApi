@@ -1,6 +1,6 @@
 namespace Bazar.Core.Models;
 
-public class Tag
+public class CartItem
 {
     
 }

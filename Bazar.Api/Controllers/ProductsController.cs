@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bazar.Api.Services.Interfaces;
 using Bazar.Core.Models;
-using Bazar.Core.Repositories;
+using Bazar.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,18 +22,19 @@ namespace Bazar.Api.Controllers
             _productsService = productsService;
         }
 
-        [HttpGet]
+        [HttpGet("id/{id:long}")]
         public async Task<IActionResult> GetById(long id) => Ok(
             await _productsService.GetById(id)
         );
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> GetAll() => Ok(
             await _productsService.GetAll()
         );
 
-        public IActionResult GetByName(string name) => Ok(
-            _productsService.get
+        [HttpGet("Search{query}")]
+        public IActionResult GetByName([FromBody]string query) => Ok(
+            _productsService.FindByName(name)
         );
 
 

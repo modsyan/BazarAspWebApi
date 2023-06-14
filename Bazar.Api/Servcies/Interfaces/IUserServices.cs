@@ -1,6 +1,6 @@
 namespace Bazar.Api.Services.Interfaces;
 
-public class IUserServices
+public class IUserServices 
 {
     
 }

@@ -1,8 +1,9 @@
+using Bazar.Api.Services.Interfaces;
 using Bazar.Core.Models;
-using Bazar.Core.Repositories;
+using Bazar.Core.Interfaces;
 
 namespace Bazar.Api.Services;
 
-public class UserService
+public class UserService: IUserServices
 {
 }

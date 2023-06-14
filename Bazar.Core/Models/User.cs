@@ -1,13 +1,15 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 // using Microsoft.AspNetCore.Identity;
 
-namespace Bazar.Api.Models;
+namespace Bazar.Core.Models;
 
 public class User 
 {
 
     [DatabaseGenerated((DatabaseGeneratedOption.Identity))]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [Required(ErrorMessage = "User \"FirstName\" is Required, Please try again.")]
     [MaxLength(50)]

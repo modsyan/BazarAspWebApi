@@ -1,5 +1,5 @@
 
-namespace Bazar.Api.Models;
+namespace Bazar.Core.Models;
 
 public class Review
 {

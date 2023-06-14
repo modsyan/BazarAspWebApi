@@ -1,9 +1,8 @@
-using Microsoft.CodeAnalysis.Options;
+using Bazar.Api.Servcies;
 using Microsoft.OpenApi.Models;
-using Bazar;
 using Bazar.Api.Services;
 using Bazar.Api.Services.Interfaces;
-using Bazar.Core.Repositories;
+using Bazar.Core.Interfaces;
 using Bazar.EF.Data;
 using Bazar.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddCors();
 
 builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-builder.Services.AddTransient(typeof(IUserServices), typeof(UserService));
+builder.Services.AddTransient<IUserServices, UserService>();
+builder.Services.AddTransient<IProductsService, ProductsService>();
 
 builder.Services.AddControllers();
 

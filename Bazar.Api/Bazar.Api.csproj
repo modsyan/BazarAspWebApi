@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bazar.EntityFramework\Bazar.EntityFramework.csproj" />
+    <ProjectReference Include="..\Bazar.EF\Bazar.EF.csproj" />
   </ItemGroup>
 
 </Project>

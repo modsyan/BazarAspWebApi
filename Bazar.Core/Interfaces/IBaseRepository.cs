@@ -6,42 +6,52 @@ namespace Bazar.Core.Interfaces;
 public interface IBaseRepository<T> where T : class
 {
     T? GetById(int id);
-    Task<T?> GetByIdAsync(int id);
     IEnumerable<T?> GetALl();
+
+    Task<T?> GetByIdAsync(int id);
     Task<IEnumerable<T>> GetAllAsync();
 
     T? Find(Expression<Func<T?, bool>> criteria, IList<string>? includes = null);
     Task<T?> FindAsync(Expression<Func<T?, bool>> criteria, IList<string>? includes = null);
 
-    
+
     IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, IList<string>? includes = null);
     IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int? take, int? skip);
-    IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int? take, int? skip, 
+
+    IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int? take, int? skip,
         Expression<Func<T, object>>? orderBy, string orderByDirection = OrderBy.Ascending);
-    
-    
+
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, IList<string>? includes = null);
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, int? take, int? skip);
-    Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, int? take, int? skip, 
+
+    Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, int? take, int? skip,
         Expression<Func<T, object>>? orderBy, string orderByDirection = OrderBy.Ascending);
+
+
+    T Create(T entity);
+    IEnumerable<T> CreateRange(IEnumerable<T> entities);
     
-    void Update(T entity);
-    void UpdateRange(IEnumerable<T> entity);
-    void UpdateRange(Expression<Func<T,bool>> criteria);
+    Task<T> CreateAsync(T entity);
+    Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities);
     
-    
-    void DeleteById(long id);
+    T Update(T entity);
+    IEnumerable<T> UpdateRange(IEnumerable<T> entity);
+    IEnumerable<T> UpdateRange(Expression<Func<T, bool>> criteria);
+
+    void Delete(long id);
     void Delete(T entity);
-    
-    
-    void DeleteRangeById(IEnumerable<long> ids);
+    void Delete(Expression<Func<T, bool>> criteria);
+
+    void DeleteRange(IEnumerable<long> ids);
     void DeleteRange(IEnumerable<T> entity);
     void DeleteRange(Expression<Func<T, bool>> criteria);
 
-    
+    T Attach(T entity);
+    IEnumerable<T> AttachRange(IEnumerable<T> entities);
+
     int Count();
-    int Count(Expression<Func<T,bool>> criteria);
-    
-    int CountAsync();
-    int CountAsync(Expression<Func<T,bool>> criteria);
+    int Count(Expression<Func<T, bool>> criteria);
+
+    Task<int> CountAsync();
+    Task<int> CountAsync(Expression<Func<T, bool>> criteria);
 }

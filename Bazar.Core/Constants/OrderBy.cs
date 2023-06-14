@@ -1,6 +1,7 @@
 namespace Bazar.Core.Constants;
 
-public class OrderBy
+public static class OrderBy
 {
-    
+    public const string Ascending = "ASC";
+    public const string Descending = "DESC";
 }

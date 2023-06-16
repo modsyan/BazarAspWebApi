@@ -14,24 +14,24 @@ public class Product
     public string Name { get; set; }
 
     [Required(ErrorMessage = "Product Price is required, please try again.")]
-    public int RegularPrice { get; set; }
-    
-    public int? DiscountPrice { get; set; }
-    
-    [Required(ErrorMessage = "Product Description is required, please try again.")]
+    public decimal RegularPrice { get; set; }
+
+    public decimal? DiscountPrice { get; set; }
+
+    [Required]
     [MaxLength(255, ErrorMessage = "Maximum Length for product name is 255 characters.")]
-    public string ShortDescription { get; set; }
-    
+    public required string ShortDescription { get; set; }
+
     [Required(ErrorMessage = "Product Description is required, please try again.")]
     [MaxLength(255, ErrorMessage = "Maximum Length for product name is 255 characters.")]
     public string Description { get; set; }
-    
+
     public ICollection<Catogory> Catogories { get; set; }
     public ICollection<Review> Reviews { get; set; }
-    
+
 
     //UserAdd
-    
+
     private bool Published { get; init; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

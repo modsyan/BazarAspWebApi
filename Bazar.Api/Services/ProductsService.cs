@@ -2,7 +2,7 @@ using Bazar.Api.Services.Interfaces;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 
-namespace Bazar.Api.Servcies;
+namespace Bazar.Api.Services;
 
 public class ProductsService : IProductsService
 {
@@ -41,6 +41,11 @@ public class ProductsService : IProductsService
     public void Delete(long id)
     {
         _productRepository.Delete(id);
+    }
+
+    public void DeleteByPrice(decimal price)
+    {
+        _productRepository.Delete(p => p.RegularPrice == price);
     }
 
     public void Delete(Product product)

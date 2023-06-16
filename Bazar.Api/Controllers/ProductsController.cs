@@ -33,7 +33,7 @@ namespace Bazar.Api.Controllers
         );
 
         [HttpGet("Search{query}")]
-        public IActionResult GetByName([FromBody]string query) => Ok(
+        public IActionResult GetByName([FromBody] string name) => Ok(
             _productsService.FindByName(name)
         );
 

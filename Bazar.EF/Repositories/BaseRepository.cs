@@ -3,7 +3,9 @@ using Bazar.Core.Constants;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
 using Bazar.EF.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bazar.EF.Repositories;
 
@@ -111,7 +113,16 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public async Task<T> CreateAsync(T entity)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _dbContext.Set<T>().Add(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
     }
 
     public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)

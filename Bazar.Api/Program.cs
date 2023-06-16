@@ -1,8 +1,9 @@
-using Bazar.Api.Servcies;
+using Bazar.Api.Middlewares;
 using Microsoft.OpenApi.Models;
 using Bazar.Api.Services;
 using Bazar.Api.Services.Interfaces;
 using Bazar.Core.Interfaces;
+using Bazar.Core.Models;
 using Bazar.EF.Data;
 using Bazar.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +21,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
+
 builder.Services.AddCors();
 
 builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-builder.Services.AddTransient<IUserServices, UserService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IProductsService, ProductsService>();
+// builder.Services.AddTransient<ErrorResponse>();
+builder.Services.AddTransient<GlobalExceptionMiddleware>();
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
 
@@ -96,7 +102,10 @@ app.UseCors(
         .WithOrigins("http://localhost/")
 );
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 app.UseAuthorization();
+
 
 app.MapControllers();
 

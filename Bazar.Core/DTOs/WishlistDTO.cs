@@ -1,6 +1,6 @@
 namespace Bazar.Core.DTOs;
 
-public class WishlistTDO
+public class WishlistDTO
 {
     
 }

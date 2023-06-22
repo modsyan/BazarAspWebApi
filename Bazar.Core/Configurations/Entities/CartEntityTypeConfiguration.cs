@@ -2,7 +2,7 @@ using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Bazar.Core.Configurations;
+namespace Bazar.Core.Configurations.Entities;
 
 public class CartEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
 {

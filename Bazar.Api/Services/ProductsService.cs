@@ -6,55 +6,55 @@ namespace Bazar.Api.Services;
 
 public class ProductsService : IProductsService
 {
-    private readonly IBaseRepository<Product> _productRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ProductsService(IBaseRepository<Product> productRepository)
+    public ProductsService(IUnitOfWork unitOfWork)
     {
-        _productRepository = productRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Product?> GetById(long id)
     {
-        return await _productRepository.GetByIdAsync(1);
+        return await _unitOfWork.Products.GetByIdAsync(1);
     }
 
     public async Task<IEnumerable<Product?>> GetAll()
     {
-        return await _productRepository.GetAllAsync();
+        return await _unitOfWork.Products.GetAllAsync();
     }
 
     public async Task<Product?> FindByName(string name)
     {
-        return await _productRepository.FindAsync(e => e != null && e.Name == name);
+        return await _unitOfWork.Products.FindAsync(e => e != null && e.Name == name);
     }
 
     public async Task<IEnumerable<Product?>> FindAllByName(string name)
     {
-        return await _productRepository.FindAllAsync(e => e.Name == name);
+        return await _unitOfWork.Products.FindAllAsync(e => e.Name == name);
     }
 
     public Product Update(Product product)
     {
-        return _productRepository.Update(product)!;
+        return _unitOfWork.Products.Update(product)!;
     }
 
     public void Delete(long id)
     {
-        _productRepository.Delete(id);
+        _unitOfWork.Products.Delete(id);
     }
 
-    public void DeleteByPrice(decimal price)
+    public void DeleteByPrice(double price)
     {
-        _productRepository.Delete(p => p.RegularPrice == price);
+        _unitOfWork.Products.Delete(p => p.RegularPrice == price);
     }
 
     public void Delete(Product product)
     {
-        _productRepository.Delete(product);
+        _unitOfWork.Products.Delete(product);
     }
 
     public void DeleteRange(Product product)
     {
-        _productRepository.Delete(product);
+        _unitOfWork.Products.Delete(product);
     }
 }

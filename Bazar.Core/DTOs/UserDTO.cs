@@ -4,6 +4,7 @@ public class RegisterUserRequestDto
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
+    public required string Username { get; set; }
     public required string Email { get; set; }
     public string? PhoneNumber { get; set; }
     public required string Password { get; set; }
@@ -12,10 +13,10 @@ public class RegisterUserRequestDto
 
 public class RegisterUserResponseDto
 {
-    
-    public int Id { get; set; }
+    public string Id { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
+    public required string Username { get; set; }
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
     public DateTime BirthDate { get; set; }

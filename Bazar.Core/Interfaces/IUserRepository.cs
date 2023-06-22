@@ -1,6 +1,8 @@
+using Bazar.Core.Models;
 namespace Bazar.Core.Interfaces;
 
-public class IUserRepository
+public interface IUserRepository: IBaseRepository<User>
 {
+    
     
 }

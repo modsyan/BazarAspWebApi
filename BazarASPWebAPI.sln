@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bazar.Core", "Bazar.Core\Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bazar.EF", "Bazar.EF\Bazar.EF.csproj", "{17ABFB04-D5DE-4897-86B1-47B96277B876}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bazar.Test", "Bazar.Test\Bazar.Test.csproj", "{9F119A83-CF9A-4278-82FD-0604041FB5D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{17ABFB04-D5DE-4897-86B1-47B96277B876}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17ABFB04-D5DE-4897-86B1-47B96277B876}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17ABFB04-D5DE-4897-86B1-47B96277B876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

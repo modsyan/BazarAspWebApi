@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
-namespace Bazar.Core.Configurations;
+namespace Bazar.Core.Configurations.Entities;
 
 public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {

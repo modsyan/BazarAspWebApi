@@ -1,15 +1,17 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Bazar.Core.Models;
 
 public class OrderItem
 {
-    public long Id { get; set; }
-    public long OrderId { get; set; }
-
-    public long userId { get; set; }
-    public User User { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public required string Id { get; set; }
     
-    public long ProductId { get; set; }
-    public Product Product { get; set; }
+    public required string OrderId { get; set; }
+    public required Order Order { get; set; }
+
+    public required string ProductId { get; set; }
+    public required Product Product { get; set; }
     
     public int Quantity { get; set; }
 

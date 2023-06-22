@@ -2,7 +2,7 @@ using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Bazar.Core.Configurations;
+namespace Bazar.Core.Configurations.Entities;
 
 public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
 {
@@ -25,13 +25,13 @@ public class OrderItemEntityTypeConfiguration : IEntityTypeConfiguration<OrderIt
 {
     public void Configure(EntityTypeBuilder<OrderItem> builder)
     {
-        builder.HasOne<Product>().WithOne().HasForeignKey<OrderItem>(o => o.ProductId)
+
+        builder.HasOne<Product>().WithMany().HasForeignKey(oi => oi.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne<Order>().WithMany(o => o.OrderItems).HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<User>().WithMany().HasForeignKey(o => o.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne<Product>().WithMany().HasForeignKey(o => o.ProductId)
-            .OnDelete(DeleteBehavior.Restrict);
+        
     }
 }

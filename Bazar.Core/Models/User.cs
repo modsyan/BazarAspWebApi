@@ -6,23 +6,23 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bazar.Core.Models;
 
-public class User
+public class User : IdentityUser
 {
-    [DatabaseGenerated((DatabaseGeneratedOption.Identity))]
-    public int Id { get; set; }
+    [Required, MaxLength(50)] public required string FirstName { get; set; }
+    [Required, MaxLength(50)] public required string LastName { get; set; }
+    
+    // [Required, MaxLength(50)] public required string Email { get; set; } /* disabled by Identity */
+    // [Required, MaxLength(50)] public required string PhoneNumber { get; set; } /* disabled by Identity */
+    // [Required, MaxLength(50)] public required string Username { get; set; } /* disabled by Identity */
+    
+    // public List<Role> Roles {get; set;}
 
-    [Required] [MaxLength(50)] public required string FirstName { get; set; }
+    public ICollection<Order> Orders { get; set; }
+    public ICollection<Review> Reviews { get; set; }
 
-    [Required] [MaxLength(50)] public required string LastName { get; set; }
-
-    [Required] [MaxLength(50)] public required string Email { get; set; }
-
-    [Required] [MaxLength(50)] public required string PhoneNumber { get; set; }
+    public Cart? Cart { get; set; }
     [Required] public required string Password { get; set; }
     public DateTime BirthDate { get; set; }
-
-    // ICollection<Role>
-
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

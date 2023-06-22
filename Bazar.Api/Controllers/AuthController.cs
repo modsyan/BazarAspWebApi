@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bazar.Api.Helpers;
 using Bazar.Api.Services;
 using Bazar.Api.Services.Interfaces;
 using Bazar.Core.DTOs;
@@ -23,37 +24,23 @@ namespace Bazar.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
 
-        public AuthController(IUserService userService, IMapper mapper, IConfiguration configuration)
+        public AuthController(IAuthService authService, IMapper mapper)
         {
-            _userService = userService;
+            _authService = authService;
             _mapper = mapper;
-            _configuration = configuration;
         }
-
-        [HttpGet]
-        public IActionResult GetById()
-        {
-            return Ok();
-        }
-
-        [HttpGet("GetByIdAsync")]
-        public async Task<IActionResult> GetByIdAsync()
-        {
-            return Ok();
-        }
-
+        
         [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequestDto dto)
         {
-            var user = await _userService.Login(dto.Email, dto.Password);
+            var user = await _authService.Login(dto.Email, dto.Password);
             if (user == null) return BadRequest();
             var sendUser = _mapper.Map<LoginUserResponseDto>(user);
-            sendUser.Token = GenerateToken(user);
+            // sendUser.Token = GenerateToken(user);
             return Ok(new
                 {
                     Success = true,
@@ -68,35 +55,12 @@ namespace Bazar.Api.Controllers
         {
             var user = _mapper.Map<User>(dto);
 
-            var userCreated = await _userService.Register(user, dto.Password);
+            var userCreated = await _authService.Register(user, dto.Password);
 
             if (userCreated == null) return BadRequest("Invalid Email or Password");
 
             var userToSend = _mapper.Map<RegisterUserResponseDto>(user);
             return Created("", userToSend);
-        }
-
-        private string GenerateToken(User user)
-        {
-            List<Claim> claims = new()
-            {
-                new Claim(ClaimTypes.Email, user.Email),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration.GetSection("JWT:key").Value!
-            ));
-
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(10),
-                signingCredentials: cred
-            );
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
         }
     }
 }

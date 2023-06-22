@@ -5,33 +5,18 @@ namespace Bazar.Core.Models;
 
 public class Product
 {
-    // [Column("ProductId")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-    [Required(ErrorMessage = "Product name is required, please try again.")]
-    [MaxLength(60, ErrorMessage = "Maximum Length for product name is 60 characters.")]
-    public string Name { get; set; }
-
-    [Required(ErrorMessage = "Product Price is required, please try again.")]
-    public decimal RegularPrice { get; set; }
-
-    public decimal? DiscountPrice { get; set; }
-
-    [Required]
-    [MaxLength(255, ErrorMessage = "Maximum Length for product name is 255 characters.")]
-    public required string ShortDescription { get; set; }
-
-    [Required(ErrorMessage = "Product Description is required, please try again.")]
-    [MaxLength(255, ErrorMessage = "Maximum Length for product name is 255 characters.")]
-    public string Description { get; set; }
-
-    public ICollection<Catogory> Catogories { get; set; }
-    public ICollection<Review> Reviews { get; set; }
-
-
-    //UserAdd
-
+    public required string Id { get; set; }
+    [MaxLength(60)] public required string Name { get; set; }
+    public required double RegularPrice { get; set; }
+    public double? DiscountPrice { get; set; }
+    [MaxLength(255)] public required string ShortDescription { get; set; }
+    public string? Description { get; set; }
+    public ICollection<Category>? Categories { get; set; }
+    public ICollection<Review>? Reviews { get; set; }
+    public required string VendorId { get; set; }
+    public required User Vendor { get; set; }
+    public required int BuyNumber { get; set; }
     private bool Published { get; init; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

@@ -23,3 +23,11 @@ public class GetCartRequestDto
 public class GetCartResponseDto
 {
 }
+
+public class EmptyRequestDto
+{
+}
+
+public class EmptyResponseDto
+{
+}

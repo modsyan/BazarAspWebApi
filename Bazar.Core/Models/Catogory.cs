@@ -3,13 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bazar.Core.Models;
 
-public class Catogory
+public class Category
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string Id { get; set; }
-    [Required, MaxLength(100)]
-    public string Name { get; set; }
-    
-    public string ProductId { get; set; }
-    public Product Product { get; set; }
+    public required string Id { get; set; }
+
+    [Required, MaxLength(100)] public required string Name { get; set; }
+
+    [Required] public required string ProductId { get; set; }
+
+    [Required] public required Product Product { get; set; }
 }

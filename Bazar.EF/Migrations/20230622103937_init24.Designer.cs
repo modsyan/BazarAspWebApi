@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bazar.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230622083107_init")]
-    partial class init
+    [Migration("20230622103937_init24")]
+    partial class init24
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,9 +272,6 @@ namespace Bazar.EF.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReviewId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -291,8 +288,6 @@ namespace Bazar.EF.Migrations
                     b.HasIndex("ProductId");
 
                     b.HasIndex("ProductId1");
-
-                    b.HasIndex("ReviewId");
 
                     b.HasIndex("UserId");
 
@@ -601,6 +596,12 @@ namespace Bazar.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Bazar.Core.Models.OrderItem", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Bazar.Core.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId1")
@@ -640,7 +641,7 @@ namespace Bazar.EF.Migrations
                     b.HasOne("Bazar.Core.Models.Product", null)
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Bazar.Core.Models.Product", "Product")
@@ -648,10 +649,6 @@ namespace Bazar.EF.Migrations
                         .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Bazar.Core.Models.Review", null)
-                        .WithMany("Replies")
-                        .HasForeignKey("ReviewId");
 
                     b.HasOne("Bazar.Core.Models.User", null)
                         .WithMany("Reviews")
@@ -736,11 +733,6 @@ namespace Bazar.EF.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Bazar.Core.Models.Review", b =>
-                {
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Bazar.Core.Models.User", b =>

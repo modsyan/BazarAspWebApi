@@ -14,5 +14,6 @@ public static class EntityConfigurationRegistrar
         new CartEntityTypeConfiguration().Configure(modelBuilder.Entity<Cart>());
         new CartItemEntityTypeConfiguration().Configure(modelBuilder.Entity<CartItem>());
         new ReviewsEntityTypeConfiguration().Configure(modelBuilder.Entity<Review>());
+        new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
     }
 }

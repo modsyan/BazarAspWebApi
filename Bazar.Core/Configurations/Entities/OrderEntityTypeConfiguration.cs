@@ -26,12 +26,20 @@ public class OrderItemEntityTypeConfiguration : IEntityTypeConfiguration<OrderIt
     public void Configure(EntityTypeBuilder<OrderItem> builder)
     {
 
-        builder.HasOne<Product>().WithMany().HasForeignKey(oi => oi.ProductId)
+        builder.HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(oi => oi.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
         
-        builder.HasOne<Order>().WithMany(o => o.OrderItems).HasForeignKey(oi => oi.OrderId)
+        builder.HasOne<Order>()
+            .WithMany(o => o.OrderItems)
+            .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        
+        builder.HasOne<OrderItem>()
+            .WithMany()
+            .HasForeignKey(oi => oi.OrderId);
+
+
     }
 }

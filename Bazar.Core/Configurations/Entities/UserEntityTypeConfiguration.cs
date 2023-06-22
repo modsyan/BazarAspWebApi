@@ -18,6 +18,10 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .Property(m => m.Email)
             .IsRequired()
             .HasMaxLength(20);
-        
+
+        builder.HasMany<Review>()
+            .WithOne(u => u.User)
+            .HasForeignKey(u => u.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

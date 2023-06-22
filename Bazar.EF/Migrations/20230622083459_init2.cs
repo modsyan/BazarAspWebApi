@@ -5,7 +5,7 @@
 namespace Bazar.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class makeEmailUnique : Migration
+    public partial class init2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

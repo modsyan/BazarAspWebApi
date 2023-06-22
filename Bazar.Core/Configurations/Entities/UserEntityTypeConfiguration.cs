@@ -12,9 +12,12 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(e => e.Email)
             .IsUnique();
 
+        builder.HasKey(e => e.Email);
+
         builder
             .Property(m => m.Email)
             .IsRequired()
             .HasMaxLength(20);
+        
     }
 }

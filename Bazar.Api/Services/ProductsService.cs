@@ -13,9 +13,9 @@ public class ProductsService : IProductsService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Product?> GetById(long id)
+    public async Task<Product?> GetById(string id)
     {
-        return await _unitOfWork.Products.GetByIdAsync(1);
+        return await _unitOfWork.Products.GetByIdAsync(id);
     }
 
     public async Task<IEnumerable<Product?>> GetAll()
@@ -23,14 +23,19 @@ public class ProductsService : IProductsService
         return await _unitOfWork.Products.GetAllAsync();
     }
 
-    public async Task<Product?> FindByName(string name)
+    public async Task<Product?> FindByName(string title)
     {
-        return await _unitOfWork.Products.FindAsync(e => e != null && e.Name == name);
+        return await _unitOfWork.Products.FindAsync(e => e != null && e.Title == title);
     }
 
-    public async Task<IEnumerable<Product?>> FindAllByName(string name)
+    public async Task<IEnumerable<Product?>> FindAllByName(string title)
     {
-        return await _unitOfWork.Products.FindAllAsync(e => e.Name == name);
+        return await _unitOfWork.Products.FindAllAsync(e => e.Title == title);
+    }
+
+    public Product Create(Product product)
+    {
+        return _unitOfWork.Products.Create(product);
     }
 
     public Product Update(Product product)
@@ -38,7 +43,7 @@ public class ProductsService : IProductsService
         return _unitOfWork.Products.Update(product)!;
     }
 
-    public void Delete(long id)
+    public void Delete(string id)
     {
         _unitOfWork.Products.Delete(id);
     }

@@ -37,14 +37,16 @@ namespace Bazar.Api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequestDto dto)
         {
-            var user = await _authService.Login(dto.Email, dto.Password);
-            if (user == null) return BadRequest();
-            var sendUser = _mapper.Map<LoginUserResponseDto>(user);
+            var token = await _authService.Login(dto.Email, dto.Password);
+
+            // var sendUser = _mapper.Map<LoginUserResponseDto>(user);
             // sendUser.Token = GenerateToken(user);
+            
+            
             return Ok(new
                 {
                     Success = true,
-                    Data = sendUser
+                    token 
                 }
             );
         }

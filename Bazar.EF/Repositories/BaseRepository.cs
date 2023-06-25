@@ -18,7 +18,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _dbContext = dbContext;
     }
 
-    public T? GetById(int id)
+    public T? GetById(string id)
     {
         return _dbContext.Find<T>(id);
     }
@@ -28,7 +28,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return _dbContext.Set<T>().ToList();
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(string id)
     {
         return await _dbContext.Set<T>().FindAsync(id);
     }
@@ -148,9 +148,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         throw new NotImplementedException();
     }
 
-    public void Delete(long id)
+    public void Delete(string id)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<T>().Find(id);
     }
 
     public void Delete(T entity)

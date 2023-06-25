@@ -16,7 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     {
         
         base.OnModelCreating(modelBuilder);
-        EntityConfigurationRegistrar.ApplyConfiguration(modelBuilder);
+        // EntityConfigurationRegistrar.ApplyConfiguration(modelBuilder);
     }
 
     public DbSet<Product> Products { get; set; }

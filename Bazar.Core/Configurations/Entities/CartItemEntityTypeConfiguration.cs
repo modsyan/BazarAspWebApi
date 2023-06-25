@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bazar.Core.Configurations.Entities;
-
-public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
+public class CartItemEntityTypeConfiguration : IEntityTypeConfiguration<CartItem>
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public void Configure(EntityTypeBuilder<CartItem> builder)
     {
+        
     }
 }

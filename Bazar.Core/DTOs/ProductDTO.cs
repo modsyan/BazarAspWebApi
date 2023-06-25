@@ -10,8 +10,19 @@ public class CreateProductRequestDto
 
 public class CreateProductResponseDto
 {
-    public string Name { get; set; }
+    public string Title { get; set; }
+
     public double RegularPrice { get; set; }
+
+    public List<string> Images { get; set; }
+
+    public double? DiscountPrice { get; set; }
+
+    public string ShortDescription { get; set; }
+
+    public string? Description { get; set; }
+
+    public ICollection<Category>? Categories { get; set; }
 }
 
 public class UpdateProductRequestDto

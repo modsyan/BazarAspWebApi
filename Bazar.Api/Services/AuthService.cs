@@ -36,21 +36,17 @@ public class AuthService : IAuthService
         // if (user.Email != null && await _userManager.FindByEmailAsync(user.Email) is not null)
         //     return new 
 
-        user.Password = HashingPassword.Hash(password);
+        user.PasswordHash = HashingPassword.Hash(password);
         var createdUser = await _unitOfWork.Users.CreateAsync(user);
 
         return createdUser;
     }
 
-    public async Task<object> Login(string email, string password)
+    public async Task<string> Login(string email, string password)
     {
         var user = await _unitOfWork.Users.FindAsync(e => e != null && e.Email == email);
-        if (user == null || !HashingPassword.Verify(password, user.Password)) return null;
-        return new object()
-        {
-            
-            
-        };
+        if (user == null || !HashingPassword.Verify(password, user.PasswordHash)) return null;
+        return await GenerateToken(user);
     }
 
     private async Task<string> GenerateToken(User user)

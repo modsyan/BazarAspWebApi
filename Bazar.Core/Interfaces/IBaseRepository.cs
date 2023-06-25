@@ -5,10 +5,10 @@ namespace Bazar.Core.Interfaces;
 
 public interface IBaseRepository<T> where T : class
 {
-    T? GetById(int id);
+    T? GetById(string id);
     IEnumerable<T?> GetALl();
 
-    Task<T?> GetByIdAsync(int id);
+    Task<T?> GetByIdAsync(string id);
     Task<IEnumerable<T>> GetAllAsync();
 
     T? Find(Expression<Func<T?, bool>> criteria, IList<string>? includes = null);
@@ -38,7 +38,7 @@ public interface IBaseRepository<T> where T : class
     IEnumerable<T> UpdateRange(IEnumerable<T> entity);
     IEnumerable<T> UpdateRange(Expression<Func<T, bool>> criteria);
 
-    void Delete(long id);
+    void Delete(string id);
     void Delete(T entity);
     void Delete(Expression<Func<T, bool>> criteria);
 

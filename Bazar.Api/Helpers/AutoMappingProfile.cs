@@ -9,13 +9,16 @@ public class AutoMappingProfile : Profile
 {
     public AutoMappingProfile()
     {
-        CreateMap<RegisterUserRequestDto, User>()
-            .ForMember(des =>
-                des.Password, opt =>
-                opt.Ignore());
+        CreateMap<RegisterUserRequestDto, User>();
+            // .ForMember(user =>
+            //     user.PasswordHash, opt =>
+            //     opt.Ignore());
 
         CreateMap<User, RegisterUserResponseDto>();
         
         CreateMap<User, LoginUserResponseDto>();
+
+        CreateMap<CreateProductRequestDto, Product>();
+        CreateMap<Product, CreateProductResponseDto>();
     }
 }

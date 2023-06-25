@@ -1,4 +1,3 @@
-using System.Text;
 using Bazar.Api.Helpers;
 using Bazar.Api.Middlewares;
 using Microsoft.OpenApi.Models;
@@ -11,7 +10,6 @@ using Bazar.EF.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,12 +35,13 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IProductsService, ProductsService>();
 builder.Services.AddIdentity<User, IdentityRole>()
+    // .AddRoleManager<RoleManager<UserRole>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JWT"));
-builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

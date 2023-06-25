@@ -8,14 +8,14 @@ public class ReviewsEntityTypeConfiguration : IEntityTypeConfiguration<Review>
 {
     public void Configure(EntityTypeBuilder<Review> builder)
     {
-        builder.HasOne<Product>()
-            .WithMany(o => o.Reviews)
-            .HasForeignKey(o => o.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne<User>()
-            .WithMany(o=> o.Reviews)
-            .HasForeignKey(r => r.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // builder.HasOne<Product>()
+        //     .WithMany(o => o.Reviews)
+        //     .HasForeignKey(o => o.ProductId)
+        //     .OnDelete(DeleteBehavior.Restrict);
+        //
+        // builder.HasOne<User>()
+        //     .WithMany(o => o.Reviews)
+        //     .HasForeignKey(r => r.UserId)
+        //     .OnDelete(DeleteBehavior.SetNull);
     }
 }

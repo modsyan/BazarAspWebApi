@@ -42,7 +42,6 @@ namespace Bazar.Api.Controllers
             // var sendUser = _mapper.Map<LoginUserResponseDto>(user);
             // sendUser.Token = GenerateToken(user);
             
-            
             return Ok(new
                 {
                     Success = true,
@@ -63,6 +62,13 @@ namespace Bazar.Api.Controllers
 
             var userToSend = _mapper.Map<RegisterUserResponseDto>(user);
             return Created("", userToSend);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("ResetPassword/{email}")]
+        public async Task<IActionResult> ResetPassword(string email)
+        {
+            throw new NotImplementedException();
         }
     }
 }

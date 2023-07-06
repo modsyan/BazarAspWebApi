@@ -1,1 +1,0 @@
-namespace Bazar.Core.DTOs;

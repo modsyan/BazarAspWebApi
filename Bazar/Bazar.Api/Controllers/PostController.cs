@@ -9,7 +9,7 @@ namespace Bazar.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostsController : ControllerBase
+    public class PostController : ControllerBase
     {
         // GET: api/Posts
         [HttpGet]

@@ -1,20 +1,20 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 5000
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["BazarASPWebAPI/BazarASPWebAPI.csproj", "BazarASPWebAPI/"]
-RUN dotnet restore "BazarASPWebAPI/BazarASPWebAPI.csproj"
+COPY ["Bazar.Api.csproj", "./"]
+RUN dotnet restore "Bazar.Api.csproj"
 COPY . .
-WORKDIR "/src/BazarASPWebAPI"
-RUN dotnet build "BazarASPWebAPI.csproj" -c Release -o /app/build
+WORKDIR /src
+RUN dotnet build "Bazar.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "BazarASPWebAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Bazar.Api.csproj" -c Release -o /app/publish
 
-FROM base AS final
+FROM base as final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BazarASPWebAPI.dll"]
+ENTRYPOINT ["dotnet", "Bazar.Api.dll"]

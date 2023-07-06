@@ -1,0 +1,24 @@
+﻿services:
+  bazar.api:
+    image: bazar.api
+    build:
+      context: .
+      dockerfile: Bazar.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    ports:
+      - 5000:80
+    depends_on: 
+      - bazar.db
+        
+  bazar.db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    ports: 
+      - "1433:1433"
+    
+    environment:
+      SA_PASSWORD: "fakePassw0rd"
+      ACCEPT_EULA: "Y"

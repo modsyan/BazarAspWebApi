@@ -3,7 +3,6 @@ using Bazar.Core.Constants;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
 using Bazar.EF.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

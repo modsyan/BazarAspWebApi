@@ -1,0 +1,18 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  bazar.api:
+    build:
+      context: "F:\\Projects\\Asp.net-core\\BazarAspWebApi"
+      dockerfile: "Bazar.Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/Bazar.Api.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    image: "bazar.api:dev"
+    ports: []
+    volumes:
+    - "F:\\Projects\\Asp.net-core\\BazarAspWebApi\\Bazar.Api:/app:rw"
+    working_dir: "/app"

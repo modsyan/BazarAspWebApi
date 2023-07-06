@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <RootNamespace>Bazar.Api</RootNamespace>
+    <UserSecretsId>670a7d4d-bcfa-479a-a844-cfb54af1a814</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

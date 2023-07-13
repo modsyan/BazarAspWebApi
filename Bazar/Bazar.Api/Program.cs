@@ -29,15 +29,24 @@ builder.Services.AddCors();
 
 builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddTransient<GlobalExceptionMiddleware>();
+
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+
 builder.Services.AddTransient<IAuthService, AuthService>();
-builder.Services.AddTransient<IProductsService, ProductsService>();
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IFaqService, FaqService>();
+
+// builder.Services.AddIdentity<User, IdentityRole>()
     // .AddRoleManager<RoleManager<UserRole>>()
+    // .AddEntityFrameworkStores<ApplicationDbContext>()
+    // .AddDefaultTokenProviders();
+
+builder.Services.AddIdentity<User, UserRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JWT"));

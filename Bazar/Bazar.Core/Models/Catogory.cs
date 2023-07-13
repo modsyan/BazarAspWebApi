@@ -6,11 +6,11 @@ namespace Bazar.Core.Models;
 public class Category
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required string Id { get; set; }
+    public Guid Id { get; set; }
 
     [Required, MaxLength(100)] public required string Name { get; set; }
 
-    [Required] public required string ProductId { get; set; }
+    [Required] public Guid ProductId { get; set; }
 
-    [Required] public required Product Product { get; set; }
+    [Required] public Product Product { get; set; }
 }

@@ -2,6 +2,8 @@ using System.Text.Json;
 
 namespace Bazar.Core.Models;
 
+// NEEDED TO REMOVED 
+// MAY SPLITTING TO MODELS AND ENTITIES 
 public class ErrorResponse
 {
     public int StatusCode { get; set; }

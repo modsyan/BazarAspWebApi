@@ -6,7 +6,7 @@ namespace Bazar.Core.Models;
 public class Product
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     [MaxLength(60)] public string Title { get; set; }
 
@@ -15,20 +15,19 @@ public class Product
     public double? DiscountPrice { get; set; }
 
     [MaxLength(255)] public string ShortDescription { get; set; }
-    
+
     public string? Description { get; set; }
-    
+
     public ICollection<ProductImage>? Images { get; set; }
 
     public ICollection<Category>? Categories { get; set; }
 
     public ICollection<Review>? Reviews { get; set; }
 
-    public string? VendorId { get; set; }
+    [Required] public Guid VendorId { get; set; }
+    [Required] public User Vendor { get; set; }
 
-    public User? Vendor { get; set; }
-
-    public int BuyNumber { get; set; }
+    public int BuyNumber { get; set; } = 0;
 
     private bool Published { get; init; } = true;
 

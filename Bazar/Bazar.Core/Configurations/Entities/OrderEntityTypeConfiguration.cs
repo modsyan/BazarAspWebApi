@@ -8,10 +8,14 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        // builder.HasOne<User>()
-        //     .WithMany(user => user.Orders)
-        //     .HasForeignKey(order => order.UserId)
-        //     .OnDelete(DeleteBehavior.Restrict);
+        // builder
+        //     .Property(order => order.Id)
+        //     .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+        builder.HasOne<User>()
+            .WithMany()
+            // .HasForeignKey(order => order.User)
+            .OnDelete(DeleteBehavior.Restrict);
         //
         // builder.HasMany<OrderItem>()
         //     .WithOne(orderItem => orderItem.Order)

@@ -7,68 +7,58 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bazar.Api.Helpers;
-using Bazar.Api.Services;
 using Bazar.Api.Services.Interfaces;
 using Bazar.Core.DTOs;
-using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
-namespace Bazar.Api.Controllers
+namespace Bazar.Api.Controllers;
+
+[AllowAnonymous]
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    private readonly IAuthService _authService;
+    private readonly IMapper _mapper;
+    
+    public AuthController(IAuthService authService, IMapper mapper)
     {
-        private readonly IAuthService _authService;
-        private readonly IMapper _mapper;
+        _authService = authService;
+        _mapper = mapper;
+    }
 
-        public AuthController(IAuthService authService, IMapper mapper)
-        {
-            _authService = authService;
-            _mapper = mapper;
-        }
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] LoginUserRequestDto dto)
+    {
         
-        [AllowAnonymous]
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserRequestDto dto)
-        {
-            var token = await _authService.Login(dto.Email, dto.Password);
+        var user = await _authService.Login(dto.Email, dto.Password);
+        
+        var userResponse = _mapper.Map<LoginUserResponseDto>(user);
+        userResponse.Token = await _authService.GenerateToken(user);
 
-            // var sendUser = _mapper.Map<LoginUserResponseDto>(user);
-            // sendUser.Token = GenerateToken(user);
-            
-            return Ok(new
-                {
-                    Success = true,
-                    token 
-                }
-            );
-        }
+        return Ok(new
+            {
+                Success = true,
+                userResponse
+            }
+        );
+    }
 
-        [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto dto)
-        {
-            var user = _mapper.Map<User>(dto);
+    [HttpPost("Register")]
+    public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto dto)
+    {
+        var user = _mapper.Map<User>(dto);
+        var userCreated = await _authService.Register(user, dto.Password);
+        if (userCreated == null) return BadRequest("Invalid Email or Password");
+        var userToSend = _mapper.Map<RegisterUserResponseDto>(user);
+        return Created("", userToSend);
+    }
 
-            var userCreated = await _authService.Register(user, dto.Password);
-
-            if (userCreated == null) return BadRequest("Invalid Email or Password");
-
-            var userToSend = _mapper.Map<RegisterUserResponseDto>(user);
-            return Created("", userToSend);
-        }
-
-        [AllowAnonymous]
-        [HttpPost("ResetPassword/{email}")]
-        public async Task<IActionResult> ResetPassword(string email)
-        {
-            throw new NotImplementedException();
-        }
+    [HttpPost("ResetPassword/{email}")]
+    public async Task<IActionResult> ResetPassword(string email)
+    {
+        throw new NotImplementedException();
     }
 }

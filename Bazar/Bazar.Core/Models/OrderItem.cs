@@ -6,12 +6,12 @@ namespace Bazar.Core.Models;
 public class OrderItem
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required string Id { get; set; }
+    public required Guid Id { get; set; }
 
-    public string? OrderId { get; set; }
+    public Guid? OrderId { get; set; }
     public Order? Order { get; set; }
 
-    public string? ProductId { get; set; }
+    public Guid ProductId { get; set; }
     public Product? Product { get; set; }
 
     [Required, Range(1, 100)]

@@ -8,6 +8,22 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        // builder
+        //     .Property(u => u.Id)
+        //     .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+
+        builder.HasMany<Order>()
+            .WithOne(order => order.User)
+            .HasForeignKey(order => order.UserId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+
+        // builder.HasMany<Order>()
+        //     .WithOne()
+        //     // .HasForeignKey(o=>o.User)
+        //     .OnDelete(DeleteBehavior.Cascade);
+
         // builder.HasIndex(e => e.Email).IsUnique();
         // builder.HasKey(e => e.Email);
         // builder
@@ -21,9 +37,6 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         //     .HasForeignKey(review => review.UserId)
         //     .OnDelete(DeleteBehavior.Cascade);
         //
-        // builder.HasMany<Order>()
-        //     .WithOne(order => order.User)
-        //     .HasForeignKey(order => order.UserId)
-        //     .OnDelete(DeleteBehavior.Cascade);
+        //
     }
 }

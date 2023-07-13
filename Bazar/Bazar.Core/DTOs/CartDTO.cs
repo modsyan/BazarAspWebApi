@@ -8,6 +8,15 @@ public class AddItemCartResponseDto
 {
 }
 
+public class UpdateItemCartRequestDto
+{
+}
+
+public class UpdateItemCartResponseDto
+{
+}
+
+
 public class RemoveItemCartRequestDto
 {
 }

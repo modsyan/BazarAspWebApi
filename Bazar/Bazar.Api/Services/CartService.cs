@@ -15,14 +15,6 @@ public class CartService: ICartService
 
     public async Task<Cart> AddItem(CartItem item)
     {
-        var cart = new Cart
-        {
-            Id = null,
-            UserId = null,
-            User = null
-        };
-        cart.Items.Add(item);
-        
         throw new NotImplementedException();
     }
 

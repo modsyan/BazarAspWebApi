@@ -11,7 +11,7 @@ public interface IUnitOfWork : IDisposable
     public IBaseRepository<Review> Reviews { get; }
     public IBaseRepository<Category> Categories { get; }
     public IBaseRepository<Address> Addresses { get; }
-    public IBaseRepository<Cart> Cart { get; }
+    public IBaseRepository<Faq> Faqs { get; }
 
     public int Complete();
 }

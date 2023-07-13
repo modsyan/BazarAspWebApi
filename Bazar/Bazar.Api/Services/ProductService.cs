@@ -4,11 +4,11 @@ using Bazar.Core.Models;
 
 namespace Bazar.Api.Services;
 
-public class ProductsService : IProductsService
+public class ProductService : IProductService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public ProductsService(IUnitOfWork unitOfWork)
+    public ProductService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

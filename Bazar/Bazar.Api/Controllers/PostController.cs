@@ -2,45 +2,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bazar.Api.Controllers
+namespace Bazar.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class PostController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PostController : ControllerBase
+    private readonly IMapper _mapper;
+
+    public PostController(IMapper mapper)
     {
-        // GET: api/Posts
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        _mapper = mapper;
+    }
 
-        // GET: api/Posts/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+    [HttpGet]
+    public Task<IActionResult> Get()
+    {
+        throw new NotImplementedException();
+    }
 
-        // POST: api/Posts
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+    [HttpGet("{postId}", Name = "Get")]
+    public Task<IActionResult> Get(string postId)
+    {
+        throw new NotImplementedException();
+    }
 
-        // PUT: api/Posts/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+    [HttpPost]
+    public Task<IActionResult> Create([FromBody] string value)
+    {
+        throw new NotImplementedException();
+    }
 
-        // DELETE: api/Posts/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+    [HttpPut("{postId}")]
+    public Task<IActionResult> Update(string postId, [FromBody] string value)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpDelete("{postId}")]
+    public Task<IActionResult> Delete(string postId)
+    {
+        throw new NotImplementedException();
     }
 }

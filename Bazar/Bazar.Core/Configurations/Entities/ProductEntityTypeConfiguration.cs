@@ -8,5 +8,8 @@ public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWSEQUENTIALID()");
     }
 }

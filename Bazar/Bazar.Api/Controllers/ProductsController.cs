@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Bazar.Api.Services.Interfaces;
 using Bazar.Core.DTOs;
 using Bazar.Core.Models;
@@ -19,26 +20,31 @@ namespace Bazar.Api.Controllers
     [AllowAnonymous] 
     public class ProductsController : ControllerBase
     {
-        private readonly IProductsService _productsService;
+        
+        private readonly IMapper _mapper;
+        private readonly IProductService _productService;
 
-        public ProductsController(IProductsService productsService)
+        public ProductsController(IProductService productService, IMapper mapper)
         {
-            _productsService = productsService;
+            _productService = productService;
+            _mapper = mapper;
         }
 
-        [HttpGet("id/{id}")]
-        public async Task<IActionResult> GetById(string id) => Ok(
-            await _productsService.GetById(id)
-        );
         
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(
-            await _productsService.GetAll()
+        public async Task<IActionResult> Get() => Ok(
+            await _productService.GetAll()
         );
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id) => Ok(
+            await _productService.GetById(id)
+        );
+        
 
         [HttpGet("Search{query}")]
         public IActionResult GetByName([FromBody] string name) => Ok(
-            _productsService.FindByName(name)
+            _productService.FindByName(name)
         );
 
 

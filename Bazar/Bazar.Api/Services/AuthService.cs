@@ -42,14 +42,14 @@ public class AuthService : IAuthService
         return createdUser;
     }
 
-    public async Task<string> Login(string email, string password)
+    public async Task<User> Login(string email, string password)
     {
         var user = await _unitOfWork.Users.FindAsync(e => e != null && e.Email == email);
         if (user == null || !HashingPassword.Verify(password, user.PasswordHash)) return null;
-        return await GenerateToken(user);
+        return user;
     }
 
-    private async Task<string> GenerateToken(User user)
+    public async Task<string> GenerateToken(User user)
     {
         var userClaims = await _userManger.GetClaimsAsync(user);
         var userRoles = await _userManger.GetRolesAsync(user);
@@ -57,8 +57,8 @@ public class AuthService : IAuthService
 
         var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.PrimarySid, user.Id),
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
             }
             .Union(userClaims)
             .Union(roleClaims);

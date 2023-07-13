@@ -8,6 +8,11 @@ public class CartEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
 {
     public void Configure(EntityTypeBuilder<Cart> builder)
     {
+        
+        builder
+            .Property(c=>c.Id)
+            .HasDefaultValueSql("NEWSEQUENTIALID()");
+        
         // builder.HasMany(c => c.CartItems)
         //     .WithOne(ci => ci.Cart)
         //     .HasForeignKey(ci => ci.CartId)

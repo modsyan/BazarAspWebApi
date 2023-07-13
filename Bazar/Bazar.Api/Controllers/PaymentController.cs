@@ -1,6 +1,6 @@
 namespace Bazar.Api.Controllers;
 
-public class WhishlistController
+public class PaymentController
 {
     
 }

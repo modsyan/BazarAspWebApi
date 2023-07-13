@@ -1,5 +1,6 @@
 namespace Bazar.Core.Models;
 
+// AuthModel Will Be Deleted And Merged With Login and Register DtoS
 public class AuthModel
 {
     public required string Message { get; set; }

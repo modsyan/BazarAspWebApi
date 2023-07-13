@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TestServices\" />
+       <ProjectReference Include="..\Bazar.Api\Bazar.Api.csproj" />
     </ItemGroup>
-
+    
 </Project>

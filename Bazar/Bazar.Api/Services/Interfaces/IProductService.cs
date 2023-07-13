@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Services.Interfaces;
 
-public interface IProductsService
+public interface IProductService
 {
     public Task<Product?> GetById(string id);
     public Task<IEnumerable<Product?>> GetAll();

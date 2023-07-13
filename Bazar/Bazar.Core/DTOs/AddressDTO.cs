@@ -1,5 +1,14 @@
 namespace Bazar.Core.DTOs;
 
+
+public class CreateAddressesRequestDto
+{
+}
+
+public class CreateAddressesResponseDto
+{
+}
+
 public class GetAllAddressesRequestDto
 {
 }

@@ -7,6 +7,10 @@ public class OrderItemEntityTypeConfiguration : IEntityTypeConfiguration<OrderIt
 {
     public void Configure(EntityTypeBuilder<OrderItem> builder)
     {
+        builder
+            .Property(oi => oi.Id)
+            .HasDefaultValueSql("NEWSEQUENTIALID()");
+        
         // builder.HasOne<Product>()
         //     .WithMany()
         //     .HasForeignKey(oi => oi.ProductId)

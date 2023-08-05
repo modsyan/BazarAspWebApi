@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Bazar.Core.Configurations;
 using Bazar.Core.Configurations.Entities;
 using Bazar.Core.Constants;
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,18 +19,24 @@ public class ApplicationDbContext : IdentityDbContext<User, UserRole, Guid>
     {
         base.OnModelCreating(modelBuilder);
         EntityConfigurationRegistrar.ApplyConfiguration(modelBuilder);
+        // GuidConfiguration.Configure(modelBuilder);
+        DefaultValuesConfiguration.SetDefaultValuesTableName(modelBuilder);
     }
 
     public DbSet<Product> Products { get; set; }
-
     public DbSet<Address> Addresses { get; set; }
-
+    
     public DbSet<Cart> Carts { get; set; }
-    public DbSet<CartItem> Cart { get; set; }
-
+    public DbSet<CartItem> CartItems { get; set; }
+    
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
-
+    
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<ReviewReply> ReviewsReplies { get; set; }
+    
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<CommentReply> CommentReplies { get; set; } 
+    
     public DbSet<Faq> Faqs { get; set; }
 }

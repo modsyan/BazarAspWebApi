@@ -1,15 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AutoMapper;
 using Bazar.Api.Helpers;
-using Bazar.Api.Services.Interfaces;
-using Bazar.Core.DTOs;
+using Bazar.Api.Services.Contracts;
+using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,11 +15,11 @@ namespace Bazar.Api.Services;
 public class AuthService : IAuthService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly Jwt _jwt;
+    private readonly JwtOptions _jwt;
     private readonly IConfiguration _configuration;
     private readonly UserManager<User> _userManger;
 
-    public AuthService(IUnitOfWork unitOfWork, UserManager<User> userManager, IOptions<Jwt> jwt,
+    public AuthService(IUnitOfWork unitOfWork, UserManager<User> userManager, IOptions<JwtOptions> jwt,
         IConfiguration configuration, UserManager<User> userManger)
     {
         _configuration = configuration;
@@ -31,21 +28,37 @@ public class AuthService : IAuthService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<User?> Register(User user, string password)
+    public async Task<User> Register(User user, string password)
     {
         // if (user.Email != null && await _userManager.FindByEmailAsync(user.Email) is not null)
         //     return new 
-
+        // TODO: USE MANGER TO ONLY USE UNIQUELY EMAIL AND USERNAME
         user.PasswordHash = HashingPassword.Hash(password);
         var createdUser = await _unitOfWork.Users.CreateAsync(user);
+        await _unitOfWork.CompleteAsync();
 
+        if (createdUser == null)
+            throw new ArgumentException("Cannot Register new account, please try again.");
         return createdUser;
     }
 
-    public async Task<User> Login(string email, string password)
+    public async Task<User> Login(string loginIdentifier, string password)
     {
-        var user = await _unitOfWork.Users.FindAsync(e => e != null && e.Email == email);
-        if (user == null || !HashingPassword.Verify(password, user.PasswordHash)) return null;
+        if (string.IsNullOrWhiteSpace(loginIdentifier) || string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("missing LoginIdentifier of Password");
+        }
+        
+        var user = await _unitOfWork.Users.FindSingleAsync(user =>
+            user != null && (user.Email == loginIdentifier || user.UserName == loginIdentifier));
+
+        if (user == null ||
+            string.IsNullOrWhiteSpace(user.PasswordHash) ||
+            !HashingPassword.Verify(password, user.PasswordHash))
+        {
+            throw new ArgumentException("Invalid Credentials, wrong username or password.");
+        }
+
         return user;
     }
 

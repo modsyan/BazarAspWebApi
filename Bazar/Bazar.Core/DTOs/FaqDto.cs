@@ -1,13 +1,13 @@
 namespace Bazar.Core.DTOs;
 
-public class CreateFaqRequestDto
+public class CreateEditFaqRequestDto
 {
 }
 
-public class CreateFaqResponseDto
+public class CreateEditFaqResponseDto
 {
 }
 
-public class GetFaqsResponse
+public class GetFaqsResponseDto
 {
 }

@@ -1,4 +1,5 @@
-using Bazar.Api.Services.Interfaces;
+using Bazar.Api.Services.Contracts;
+using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 
@@ -13,19 +14,19 @@ public class ProductService : IProductService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Product?> GetById(string id)
+    public async Task<Product?> GetById(Guid id)
     {
-        return await _unitOfWork.Products.GetByIdAsync(id);
+        return await _unitOfWork.Products.GetAsync(id);
     }
 
     public async Task<IEnumerable<Product?>> GetAll()
     {
-        return await _unitOfWork.Products.GetAllAsync();
+        return await _unitOfWork.Products.GetAsync();
     }
 
     public async Task<Product?> FindByName(string title)
     {
-        return await _unitOfWork.Products.FindAsync(e => e != null && e.Title == title);
+        return await _unitOfWork.Products.FindFirstAsync(e => e.Title == title);
     }
 
     public async Task<IEnumerable<Product?>> FindAllByName(string title)
@@ -43,7 +44,7 @@ public class ProductService : IProductService
         return _unitOfWork.Products.Update(product)!;
     }
 
-    public void Delete(string id)
+    public void Delete(Guid id)
     {
         _unitOfWork.Products.Delete(id);
     }

@@ -1,3 +1,4 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,9 +19,10 @@ public class CartEntityTypeConfiguration : IEntityTypeConfiguration<Cart>
         //     .HasForeignKey(ci => ci.CartId)
         //     .OnDelete(DeleteBehavior.Cascade);
         //
-        // builder.HasOne(c => c.User)
-        //     .WithOne(u => u.Cart)
-        //     .HasForeignKey<Cart>(c => c.UserId)
-        //     .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(c => c.User)
+            .WithOne(u => u.Cart)
+            .HasForeignKey("UserId")
+            .IsRequired()
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

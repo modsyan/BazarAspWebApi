@@ -1,4 +1,5 @@
 using Bazar.Core.Configurations.Entities;
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,12 +20,17 @@ public static class EntityConfigurationRegistrar
         // new FaqEntityTypeConfiguration().Configure(modelBuilder.Entity<Faq>());
         //
         new OrderEntityTypeConfiguration().Configure(modelBuilder.Entity<Order>());
-        // new OrderItemEntityTypeConfiguration().Configure(modelBuilder.Entity<OrderItem>());
+        new OrderItemEntityTypeConfiguration().Configure(modelBuilder.Entity<OrderItem>());
         //
         // new ProductEntityTypeConfiguration().Configure(modelBuilder.Entity<Product>());
         // new ProductImageEntityTypeConfiguration().Configure(modelBuilder.Entity<ProductImage>());
         //
         new ReviewsEntityTypeConfiguration().Configure(modelBuilder.Entity<Review>());
+        new ReviewReplyEntityTypeConfiguration().Configure(modelBuilder.Entity<ReviewReply>());
+        
+        new CommentEntityTypeConfiguration().Configure(modelBuilder.Entity<Comment>());
+        new CommentReplyEntityTypeConfiguration().Configure(modelBuilder.Entity<CommentReply>());
+        
         new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
     }
 }

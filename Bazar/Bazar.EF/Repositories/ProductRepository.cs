@@ -1,3 +1,4 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 using Bazar.EF.Data;

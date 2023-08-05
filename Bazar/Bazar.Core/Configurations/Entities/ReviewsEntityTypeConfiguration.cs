@@ -1,3 +1,4 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,11 +13,17 @@ public class ReviewsEntityTypeConfiguration : IEntityTypeConfiguration<Review>
         //     .Property(p => p.Id)
         //     .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+        // builder
+        //     .HasOne<Product>()
+        //     .WithMany()
+        //     .HasForeignKey(r => r.ProductId)
+        //     .OnDelete(DeleteBehavior.ClientNoAction);
+
         builder
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(r => r.ProductId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasOne(review => review.Product)
+            .WithMany(product => product.Reviews)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
         // builder.HasOne<Product>()
         //     .WithMany(o => o.Reviews)

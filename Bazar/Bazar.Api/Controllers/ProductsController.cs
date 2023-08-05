@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bazar.Api.Services.Interfaces;
+using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
@@ -36,14 +36,14 @@ namespace Bazar.Api.Controllers
             await _productService.GetAll()
         );
         
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id) => Ok(
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> Get(Guid id) => Ok(
             await _productService.GetById(id)
         );
         
 
         [HttpGet("Search{query}")]
-        public IActionResult GetByName([FromBody] string name) => Ok(
+        public IActionResult GetByName([FromBody] string name, string query) => Ok(
             _productService.FindByName(name)
         );
 

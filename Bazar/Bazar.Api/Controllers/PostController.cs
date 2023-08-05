@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bazar.Api.Services.Contracts;
+using Bazar.Core.DTOs;
+using Bazar.Core.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
@@ -13,39 +17,51 @@ namespace Bazar.Api.Controllers;
 public class PostController : ControllerBase
 {
     private readonly IMapper _mapper;
+    private readonly IPostService _postService;
 
-    public PostController(IMapper mapper)
+    public PostController(IMapper mapper, IPostService postService)
     {
         _mapper = mapper;
+        _postService = postService;
     }
 
     [HttpGet]
-    public Task<IActionResult> Get()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<IActionResult> Get() => Ok(
+        await _postService.GetAll()
+    );
 
-    [HttpGet("{postId}", Name = "Get")]
-    public Task<IActionResult> Get(string postId)
-    {
-        throw new NotImplementedException();
-    }
+    [HttpGet("/{postId:guid}")]
+    public async Task<IActionResult> Get([FromQuery] Guid postId) => Ok(
+        await _postService.FindById(postId)
+    );
 
     [HttpPost]
-    public Task<IActionResult> Create([FromBody] string value)
+    public async Task<IActionResult> Create([FromBody] CreateEditPostRequestDto dto)
     {
-        throw new NotImplementedException();
+        // needed to store with file mangement dto.UploadedImages;
+        var post = _mapper.Map<Post>(dto);
+        var createdPost = _postService.Crate(post);
+        var postResponse = _mapper.Map<CreateEditPostResponseDto>(post);
+
+        // var user = _userService.
+        
+        return Ok(postResponse);
     }
 
-    [HttpPut("{postId}")]
-    public Task<IActionResult> Update(string postId, [FromBody] string value)
+    [HttpPut("/{postId:guid}")]
+    public async Task<IActionResult> Update(Guid postId, [FromBody] CreateEditPostResponseDto dto)
     {
-        throw new NotImplementedException();
+        var post = _mapper.Map<Post>(dto);
+        var updatedPost = _postService.Update(postId, post);
+        var postResponse = _mapper.Map<CreateEditPostResponseDto>(updatedPost);
+
+        return Ok(postResponse);
     }
 
     [HttpDelete("{postId}")]
-    public Task<IActionResult> Delete(string postId)
+    public async Task<IActionResult> Delete(Guid postId)
     {
-        throw new NotImplementedException();
+        _postService.Remove(postId);
+        return Ok("Post Deleted Successfully");
     }
 }

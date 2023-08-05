@@ -5,6 +5,9 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9b7ca366_002Dd990_002D4b02_002D85e6_002D01bd2255b1da/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="FaqServiceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::9F119A83-CF9A-4278-82FD-0604041FB5D1::net7.0::Bazar.Test.ServiceTests.FaqServiceTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9F119A83-CF9A-4278-82FD-0604041FB5D1::net7.0::Bazar.Test.ServiceTests.ProductsServiceTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9F119A83-CF9A-4278-82FD-0604041FB5D1::net7.0::Bazar.Test.ServiceTests.AuthServiceTest.RegisterUser_DuplicateEmailOrUsername_ThrowException&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::9F119A83-CF9A-4278-82FD-0604041FB5D1::net7.0::Bazar.Test.ServiceTests.AuthServiceTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

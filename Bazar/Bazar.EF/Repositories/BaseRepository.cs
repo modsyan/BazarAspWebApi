@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Bazar.Core.Constants;
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
 using Bazar.EF.Data;
@@ -17,27 +18,27 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _dbContext = dbContext;
     }
 
-    public T? GetById(string id)
+    public T? Get(Guid id)
     {
         return _dbContext.Find<T>(id);
     }
 
-    public IEnumerable<T?> GetALl()
+    public IEnumerable<T> Get()
     {
         return _dbContext.Set<T>().ToList();
     }
 
-    public async Task<T?> GetByIdAsync(string id)
+    public async Task<T?> GetAsync(Guid id)
     {
         return await _dbContext.Set<T>().FindAsync(id);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAsync()
     {
         return await _dbContext.Set<T>().ToListAsync();
     }
 
-    public T? Find(Expression<Func<T?, bool>> criteria, IList<string>? includes = null)
+    public T? FindFirst(Expression<Func<T?, bool>> criteria, IList<string>? includes = null)
     {
         IQueryable<T> query = _dbContext.Set<T>();
         includes ??= new List<string>();
@@ -47,14 +48,56 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return query.FirstOrDefault(criteria);
     }
 
-    public async Task<T?> FindAsync(Expression<Func<T?, bool>> criteria, IList<string>? includes = null)
+
+    public T FindSingle(Expression<Func<T?, bool>> criteria, IList<string>? includes = null)
     {
         IQueryable<T> query = _dbContext.Set<T>();
         includes ??= new List<string>();
         query = includes.Aggregate(query, (currentQueryValue, include) =>
             currentQueryValue.Include(include));
 
-        return await query.FirstOrDefaultAsync(criteria);
+        var result = query.SingleOrDefault(criteria);
+
+        if (result == null)
+        {
+            throw new ArgumentException("Entity with that criteria not found");
+        }
+
+        return result;
+    }
+
+    public async Task<T> FindSingleAsync(Expression<Func<T, bool>> criteria, IList<string>? includes = null)
+    {
+        IQueryable<T> query = _dbContext.Set<T>();
+        includes ??= new List<string>();
+        query = includes.Aggregate(query, (currentQueryValue, include) =>
+            currentQueryValue.Include(include));
+
+        var result = await query.SingleOrDefaultAsync(criteria);
+
+        if (result == null)
+        {
+            throw new ArgumentException("Entity with that criteria not found");
+        }
+
+        return result;
+    }
+
+    public async Task<T> FindFirstAsync(Expression<Func<T, bool>> criteria, IList<string>? includes = null)
+    {
+        IQueryable<T> query = _dbContext.Set<T>();
+        includes ??= new List<string>();
+        query = includes.Aggregate(query, (currentQueryValue, include) =>
+            currentQueryValue.Include(include));
+
+        var result = await query.SingleOrDefaultAsync(criteria);
+
+        if (result == null)
+        {
+            throw new ArgumentException("Entity with that criteria not found");
+        }
+
+        return result;
     }
 
     public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, IList<string>? includes = null)
@@ -107,39 +150,47 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public IEnumerable<T> CreateRange(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        List<T> createdEntities = new();
+        foreach (var entity in entities)
+        {
+            createdEntities.Append<>(_dbContext.Add(entity));
+        }
+
+        return createdEntities;
     }
 
     public async Task<T> CreateAsync(T entity)
     {
-        try
-        {
-            _dbContext.Set<T>().Add(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
-        catch (Exception e)
-        {
-            throw;
-        }
+        var entityEntry = await _dbContext.Set<T>().AddAsync(entity);
+        return entityEntry.Entity;
     }
 
     public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        List<T> createdEntities = new();
+        foreach (var entity in entities)
+        {
+            createdEntities.Append<>(await _dbContext.AddAsync(entity));
+        }
+
+        return createdEntities;
     }
 
     public T Update(T entity)
     {
-        // todo: handle updating here
         _dbContext.Set<T>().Update(entity);
-        _dbContext.SaveChangesAsync();
         return entity;
     }
 
-    public IEnumerable<T> UpdateRange(IEnumerable<T> entity)
+    public IEnumerable<T> UpdateRange(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        List<T> updatedEntities = new();
+        foreach (var entity in entities)
+        {
+            updatedEntities.Append<>(_dbContext.Set<T>().Update(entity));
+        }
+
+        return updatedEntities;
     }
 
     public IEnumerable<T> UpdateRange(Expression<Func<T, bool>> criteria)
@@ -147,33 +198,42 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         throw new NotImplementedException();
     }
 
-    public void Delete(string id)
+    public bool Delete(Guid id)
     {
-        _dbContext.Set<T>().Find(id);
+        var entity = _dbContext.Find<T>(id);
+        if (entity == null) return false; // TODO: needing to handle
+        _dbContext.Remove<T>(entity);
+        return true;
     }
 
-    public void Delete(T entity)
+    public bool Delete(T entity)
     {
         _dbContext.Set<T>().Remove(entity);
-        _dbContext.SaveChangesAsync();
+        return true;
     }
 
-    public void Delete(Expression<Func<T, bool>> criteria)
+    public bool Delete(Expression<Func<T, bool>> criteria)
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteRange(IEnumerable<long> ids)
+
+    public bool DeleteRange(IEnumerable<Guid> ids)
+    {
+        foreach (var id in ids)
+        {
+            
+        }
+        
+        return true;
+    }
+
+    public bool DeleteRange(IEnumerable<T> entity)
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteRange(IEnumerable<T> entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void DeleteRange(Expression<Func<T, bool>> criteria)
+    public bool DeleteRange(Expression<Func<T, bool>> criteria)
     {
         throw new NotImplementedException();
     }

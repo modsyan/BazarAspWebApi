@@ -28,7 +28,7 @@ public class GlobalExceptionMiddleware : IMiddleware
     private static Task HandlerException(HttpContext context, Exception e)
     {
         const int statusCode = (int)HttpStatusCode.InternalServerError;
-        var errorResponse = new ErrorResponse
+        var errorResponse = new ErrorModel
         {
             StatusCode = statusCode,
             Message = e.Message,

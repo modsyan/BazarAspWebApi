@@ -1,15 +1,21 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
+using Bazar.Core.Models;
 using Bazar.EF.Data;
 using Bazar.EF.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Bazar.Api.Extensions;
 
 namespace Bazar.Test;
 
-public abstract class BaseServiceTests<TService> where TService: class
+public abstract class BaseServiceTests<TService> where TService : class
 {
     protected TService Service { get; }
+
 
     protected BaseServiceTests()
     {
@@ -20,25 +26,17 @@ public abstract class BaseServiceTests<TService> where TService: class
 
         var services = new ServiceCollection();
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                optionsBuilder => optionsBuilder.MigrationsAssembly(
-                    typeof(ApplicationDbContext).Assembly.FullName
-                )
-            )
-        );
+        services.AddLogging();
 
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
-        services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<IProductRepository, ProductRepository>();
-        services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+        services.TransitServicesRegistrar();
+        services.DbContextRegistrar(configuration: configuration);
+        services.IdentityRegistrar();
         
-        AddServices(services);
         
+        services.AddSingleton<IConfiguration>(configuration);
+
+
         var serviceProvider = services.BuildServiceProvider();
         Service = serviceProvider.GetRequiredService<TService>();
     }
-    
-    protected abstract void AddServices(IServiceCollection services);
 }

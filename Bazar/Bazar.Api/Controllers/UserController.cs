@@ -1,5 +1,5 @@
 using AutoMapper;
-using Bazar.Api.Services.Interfaces;
+using Bazar.Api.Services.Contracts;
 using Bazar.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,6 @@ namespace Bazar.Api.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
 
@@ -41,5 +40,4 @@ public class UserController : ControllerBase
     {
         throw new NotImplementedException();
     }
-    
 }

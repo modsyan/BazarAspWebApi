@@ -1,3 +1,4 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

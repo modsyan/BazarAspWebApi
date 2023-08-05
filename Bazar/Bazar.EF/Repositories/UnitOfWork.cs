@@ -1,3 +1,4 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 using Bazar.EF.Data;
@@ -15,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<Category> Categories { get; private set; }
     public IBaseRepository<Address> Addresses { get; private set; }
     public IBaseRepository<Faq> Faqs { get; private set; }
+    public IBaseRepository<Post> Posts { get; }
 
     public UnitOfWork(ApplicationDbContext dbContext, IUserRepository users, IProductRepository products,
         IBaseRepository<Cart> carts, IBaseRepository<Order> orders,
@@ -37,9 +39,13 @@ public class UnitOfWork : IUnitOfWork
         _dbContext.Dispose();
     }
 
-
     public int Complete()
     {
         return _dbContext.SaveChanges();
+    }
+
+    public async Task<int> CompleteAsync()
+    {
+        return await _dbContext.SaveChangesAsync();
     }
 }

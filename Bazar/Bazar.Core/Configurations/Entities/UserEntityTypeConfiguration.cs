@@ -1,3 +1,4 @@
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,16 +9,25 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasIndex(u => u.UserName).IsUnique();
+        builder.Property(u => u.Email).IsRequired();
+        builder.HasIndex(u => u.Email).IsUnique();
+        builder.Property(u => u.UserName).IsRequired();
+
         // builder
         //     .Property(u => u.Id)
         //     .HasDefaultValueSql("NEWSEQUENTIALID()");
 
-
-        builder.HasMany<Order>()
+        builder.HasMany(user => user.Orders)
             .WithOne(order => order.User)
-            .HasForeignKey(order => order.UserId)
             .OnDelete(DeleteBehavior.ClientCascade);
 
+        builder
+            .HasOne(user => user.Cart)
+            .WithOne(cart => cart.User)
+            // .HasForeignKey("CartId")
+            .HasForeignKey<User>(e=>e.CartId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // builder.HasMany<Order>()
         //     .WithOne()

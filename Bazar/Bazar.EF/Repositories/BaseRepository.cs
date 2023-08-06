@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Bazar.Core.Constants;
+using Bazar.Core.Contracts;
 using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
@@ -11,31 +12,41 @@ namespace Bazar.EF.Repositories;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
-    protected readonly ApplicationDbContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
 
     public BaseRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public T? Get(Guid id)
+    public T? Get(Guid id, IList<string>? includes = null)
     {
         return _dbContext.Find<T>(id);
     }
 
-    public IEnumerable<T> Get()
+    public IEnumerable<T> Get(IList<string>? includes = null)
     {
-        return _dbContext.Set<T>().ToList();
+        IQueryable<T> query = _dbContext.Set<T>();
+        includes ??= new List<string>();
+        query = includes.Aggregate(query, (currentQueryValue, include) =>
+            currentQueryValue.Include(include));
+        
+        return query.ToList();
     }
 
-    public async Task<T?> GetAsync(Guid id)
+    public async Task<T?> GetAsync(Guid id, IList<string>? includes = null)
     {
         return await _dbContext.Set<T>().FindAsync(id);
     }
 
-    public async Task<IEnumerable<T>> GetAsync()
+    public async Task<IEnumerable<T>> GetAsync(IList<string>? includes = null)
     {
-        return await _dbContext.Set<T>().ToListAsync();
+        IQueryable<T> query = _dbContext.Set<T>();
+        includes ??= new List<string>();
+        query = includes.Aggregate(query, (currentQueryValue, include) =>
+            currentQueryValue.Include(include));
+        
+        return await query.ToListAsync();
     }
 
     public T? FindFirst(Expression<Func<T?, bool>> criteria, IList<string>? includes = null)
@@ -222,9 +233,8 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         foreach (var id in ids)
         {
-            
         }
-        
+
         return true;
     }
 

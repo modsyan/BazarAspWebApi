@@ -1,3 +1,4 @@
+using Bazar.Core.Contracts;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;

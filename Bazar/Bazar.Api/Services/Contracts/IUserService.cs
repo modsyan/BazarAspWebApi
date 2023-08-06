@@ -7,5 +7,4 @@ public interface IUserService
     Task<User> Get(Guid userId);
     Task<User> GetDetails(Guid userId);
     Task<IEnumerable<User>> Get();
-    Task<IEnumerable<User>> GetDetails();
 }

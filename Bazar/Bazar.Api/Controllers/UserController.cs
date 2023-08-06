@@ -13,11 +13,13 @@ public class UserController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
+    private readonly ILogger _logger;
 
-    public UserController(IMapper mapper, IUserRepository userRepository, IUserService userService)
+    public UserController(IMapper mapper, IUserRepository userRepository, IUserService userService, ILogger logger)
     {
         _mapper = mapper;
         _userService = userService;
+        _logger = logger;
     }
 
     [HttpPost("/")]
@@ -36,8 +38,13 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Me")]
-    public Task<IActionResult> GetMe()
+    public async Task<IActionResult> GetMe()
     {
-        throw new NotImplementedException();
+        var userId = User.Claims.FirstOrDefault(user => user.Type == "Id")?.Value!;
+        
+        _logger.Log(LogLevel.Trace, userId);
+
+        var user = await _userService.Get(Guid.Parse((ReadOnlySpan<char>) userId));
+        return Ok(user);
     }
 }

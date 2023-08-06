@@ -3,6 +3,7 @@ using Bazar.Api.Middlewares;
 using Bazar.Api.Services;
 using Bazar.Api.Services.Contracts;
 using Bazar.Api.Swagger;
+using Bazar.Core.Contracts;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 using Bazar.EF.Repositories;

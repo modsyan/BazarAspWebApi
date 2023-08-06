@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Bazar.Api.Services;
 
-public class UserService: IUserService
+public class UserService : IUserService
 {
     private IUnitOfWork _unitOfWork;
 
@@ -26,11 +26,6 @@ public class UserService: IUserService
 
     public async Task<IEnumerable<User>> Get()
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<User>> GetDetails()
-    {
-        throw new NotImplementedException();
+        return await _unitOfWork.Users.GetAsync();
     }
 }

@@ -74,8 +74,8 @@ namespace Bazar.EF.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PictureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PictureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
@@ -106,8 +106,7 @@ namespace Bazar.EF.Migrations
                         name: "FK_AspNetUsers_ProfilePicture_PictureId",
                         column: x => x.PictureId,
                         principalTable: "ProfilePicture",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -282,6 +281,52 @@ namespace Bazar.EF.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserUser",
+                columns: table => new
+                {
+                    BlacklistId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserUser", x => new { x.BlacklistId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserUser_AspNetUsers_BlacklistId",
+                        column: x => x.BlacklistId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserUser_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserUser1",
+                columns: table => new
+                {
+                    FollowersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FollowingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserUser1", x => new { x.FollowersId, x.FollowingId });
+                    table.ForeignKey(
+                        name: "FK_UserUser1_AspNetUsers_FollowersId",
+                        column: x => x.FollowersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserUser1_AspNetUsers_FollowingId",
+                        column: x => x.FollowingId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -654,7 +699,8 @@ namespace Bazar.EF.Migrations
                 name: "IX_AspNetUsers_CartId",
                 table: "AspNetUsers",
                 column: "CartId",
-                unique: true);
+                unique: true,
+                filter: "[CartId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_Email",
@@ -784,6 +830,16 @@ namespace Bazar.EF.Migrations
                 name: "IX_Tag_ProductId",
                 table: "Tag",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserUser_UserId",
+                table: "UserUser",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserUser1_FollowingId",
+                table: "UserUser1",
+                column: "FollowingId");
         }
 
         /// <inheritdoc />
@@ -833,6 +889,12 @@ namespace Bazar.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tag");
+
+            migrationBuilder.DropTable(
+                name: "UserUser");
+
+            migrationBuilder.DropTable(
+                name: "UserUser1");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

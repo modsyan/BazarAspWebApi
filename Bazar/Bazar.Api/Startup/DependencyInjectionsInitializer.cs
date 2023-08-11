@@ -2,7 +2,6 @@ using Bazar.Api.Helpers;
 using Bazar.Api.Middlewares;
 using Bazar.Api.Services;
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Swagger;
 using Bazar.Core.Contracts;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
@@ -10,7 +9,7 @@ using Bazar.EF.Repositories;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Bazar.Api.Extensions;
+namespace Bazar.Api.Startup;
 
 public static class ServiceExtensions
 {
@@ -30,7 +29,7 @@ public static class ServiceExtensions
 
     public static IServiceCollection TransitServicesRegistrar(this IServiceCollection services)
     {
-        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
         
         services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddTransient<GlobalExceptionMiddleware>();
@@ -46,7 +45,8 @@ public static class ServiceExtensions
         return services;
     }
 
-    public static void ScopedServicesRegistrar(this IServiceCollection services)
+    public static IServiceCollection ScopedServicesRegistrar(this IServiceCollection services)
     {
+        return services;
     }
 }

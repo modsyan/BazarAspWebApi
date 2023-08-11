@@ -28,6 +28,9 @@
       <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
         <HintPath>..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\7.0.4\ref\net7.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
       </Reference>
+      <Reference Include="Microsoft.AspNetCore.Server.IIS">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\7.0.4\ref\net7.0\Microsoft.AspNetCore.Server.IIS.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 <!--    <ItemGroup>-->

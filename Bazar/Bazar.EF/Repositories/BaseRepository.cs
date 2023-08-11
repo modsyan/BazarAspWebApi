@@ -5,6 +5,8 @@ using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
 using Bazar.EF.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.IIS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -30,7 +32,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         includes ??= new List<string>();
         query = includes.Aggregate(query, (currentQueryValue, include) =>
             currentQueryValue.Include(include));
-        
+
         return query.ToList();
     }
 
@@ -45,7 +47,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         includes ??= new List<string>();
         query = includes.Aggregate(query, (currentQueryValue, include) =>
             currentQueryValue.Include(include));
-        
+
         return await query.ToListAsync();
     }
 
@@ -159,15 +161,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         throw new NotImplementedException();
     }
 
-    public IEnumerable<T> CreateRange(IEnumerable<T> entities)
+    public void CreateRange(IEnumerable<T> entities)
     {
-        List<T> createdEntities = new();
-        foreach (var entity in entities)
-        {
-            createdEntities.Append<>(_dbContext.Add(entity));
-        }
-
-        return createdEntities;
+        _dbContext.AddRange(entities);
     }
 
     public async Task<T> CreateAsync(T entity)
@@ -176,15 +172,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entityEntry.Entity;
     }
 
-    public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
+    public async void CreateRangeAsync(IEnumerable<T> entities)
     {
-        List<T> createdEntities = new();
-        foreach (var entity in entities)
-        {
-            createdEntities.Append<>(await _dbContext.AddAsync(entity));
-        }
-
-        return createdEntities;
+        await _dbContext.AddAsync(entities);
     }
 
     public T Update(T entity)
@@ -193,34 +183,34 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return entity;
     }
 
-    public IEnumerable<T> UpdateRange(IEnumerable<T> entities)
+    public T UpdateAsync(T entity)
     {
-        List<T> updatedEntities = new();
-        foreach (var entity in entities)
-        {
-            updatedEntities.Append<>(_dbContext.Set<T>().Update(entity));
-        }
-
-        return updatedEntities;
+        throw new NotImplementedException();
     }
 
-    public IEnumerable<T> UpdateRange(Expression<Func<T, bool>> criteria)
+    public void UpdateRange(IEnumerable<T> entities)
     {
+        _dbContext.Set<T>().UpdateRange(entities);
+    }
+
+    public void UpdateRange(Expression<Func<T, bool>> criteria)
+    {
+        // _dbContext.Set<T>().UpdateRange(entities);
         throw new NotImplementedException();
     }
 
     public bool Delete(Guid id)
     {
         var entity = _dbContext.Find<T>(id);
-        if (entity == null) return false; // TODO: needing to handle
+        if (entity is null) return false;
         _dbContext.Remove<T>(entity);
         return true;
     }
 
-    public bool Delete(T entity)
+    public void Delete(T entity)
+
     {
         _dbContext.Set<T>().Remove(entity);
-        return true;
     }
 
     public bool Delete(Expression<Func<T, bool>> criteria)
@@ -229,21 +219,26 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     }
 
 
-    public bool DeleteRange(IEnumerable<Guid> ids)
+    public void DeleteRange(IEnumerable<Guid> ids)
     {
-        foreach (var id in ids)
-        {
-        }
+        var entityToDelete = new List<T>();
 
-        return true;
+        if (entityToDelete == null)
+            throw new ArgumentException("No Entity is Found with this ids to delete");
+
+        entityToDelete
+            .AddRange(ids.Select(id => _dbContext.Set<T>().Find(id))
+                .Where(entity => entity != null)!);
+
+        _dbContext.Set<T>().RemoveRange(entityToDelete);
     }
 
-    public bool DeleteRange(IEnumerable<T> entity)
+    public void DeleteRange(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<T>().RemoveRange(entities);
     }
 
-    public bool DeleteRange(Expression<Func<T, bool>> criteria)
+    public void DeleteRange(Expression<Func<T, bool>> criteria)
     {
         throw new NotImplementedException();
     }

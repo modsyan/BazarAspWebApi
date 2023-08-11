@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using Bazar.Api.Helpers;
 using Bazar.Core.Constants;
 using Bazar.Core.Entities;
@@ -6,6 +7,7 @@ using Bazar.Core.Models;
 using Bazar.EF.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -47,22 +49,22 @@ public static class AuthExtensions
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
-            })
-            .AddTwitter(option =>
-            {
-                option.ConsumerKey = externalsAuthOptions.TwitterClientId;
-                option.ConsumerSecret = externalsAuthOptions.TwitterClientSecret;
-            })
-            .AddFacebook(option =>
-            {
-                option.AppId = externalsAuthOptions.FacebookAppId;
-                option.AppSecret = externalsAuthOptions.FacebookAppSecret;
-            })
-            .AddGoogle(option =>
-            {
-                option.ClientId = externalsAuthOptions.GoogleClientKey;
-                option.ClientSecret = externalsAuthOptions.GoogleClientSecret;
             });
+        // .AddTwitter(option =>
+        // {
+        //     option.ConsumerKey = externalsAuthOptions.TwitterClientId;
+        //     option.ConsumerSecret = externalsAuthOptions.TwitterClientSecret;
+        // })
+        // .AddFacebook(option =>
+        // {
+        //     option.AppId = externalsAuthOptions.FacebookAppId;
+        //     option.AppSecret = externalsAuthOptions.FacebookAppSecret;
+        // })
+        // .AddGoogle(option =>
+        // {
+        //     option.ClientId = externalsAuthOptions.GoogleClientKey;
+        //     option.ClientSecret = externalsAuthOptions.GoogleClientSecret;
+        // });
 
         services.AddAuthorization(option =>
         {
@@ -105,6 +107,19 @@ public static class AuthExtensions
                 }
             )
         );
+        return services;
+    }
+
+    public static IServiceCollection LimiterRegistrar(this IServiceCollection services)
+    {
+        services.AddRateLimiter(_ => _
+            .AddFixedWindowLimiter(policyName: "fixed", options =>
+            {
+                options.PermitLimit = 4;
+                options.Window = TimeSpan.FromSeconds(12);
+                options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                options.QueueLimit = 2;
+            }));
         return services;
     }
 }

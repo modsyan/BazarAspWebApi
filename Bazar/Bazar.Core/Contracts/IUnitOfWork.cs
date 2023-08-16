@@ -15,6 +15,7 @@ public interface IUnitOfWork : IDisposable
     public IBaseRepository<Address> Addresses { get; }
     public IBaseRepository<Faq> Faqs { get; }
     public IBaseRepository<Post> Posts { get; }
+    public IBaseRepository<Block> Blocks { get; }
 
     public int Complete();
     public Task<int> CompleteAsync();

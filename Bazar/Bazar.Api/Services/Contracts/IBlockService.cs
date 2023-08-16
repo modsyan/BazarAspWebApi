@@ -2,10 +2,11 @@ using Bazar.Core.Entities;
 
 namespace Bazar.Api.Services.Contracts;
 
-public interface IBlacklistService
+public interface IBlockService
 {
-    Task<IEnumerable<User>?> GetList(Guid userId);
+    public Task<IEnumerable<Block>> GetBlocked(Guid userId);
+    public Task<IEnumerable<Block>> GetBlockedBy(Guid userId);
     Task<bool> RemoveList(Guid userId);
-    Task<User?> Include(Guid userId, Guid targetUserId);
-    Task<User?> Exclude(Guid userId, Guid targetUserId);
+    Task<bool> BlockUserAsync(Guid userId, Guid targetUserId);
+    Task<bool> UnblockUserAsync(Guid userId, Guid targetUserId);
 }

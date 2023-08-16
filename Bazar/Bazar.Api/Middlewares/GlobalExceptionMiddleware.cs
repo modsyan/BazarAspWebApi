@@ -27,6 +27,7 @@ public class GlobalExceptionMiddleware : IMiddleware
 
     private static Task HandlerException(HttpContext context, Exception e)
     {
+        //TODO: make dynamic Internal code errors
         const int statusCode = (int)HttpStatusCode.InternalServerError;
         var errorResponse = new ErrorModel
         {

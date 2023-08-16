@@ -1,34 +1,15 @@
 namespace Bazar.Core.DTOs;
 
-
-public class CreateAddressesRequestDto
+public class AddressDto
 {
-}
-
-public class CreateAddressesResponseDto
-{
-}
-
-public class GetAllAddressesRequestDto
-{
-}
-
-public class GetAllAddressesResponseDto
-{
-}
-
-public class RemoveAddressRequestDto
-{
-}
-
-public class RemoveAddressResponseDto
-{
-}
-
-public class UpdateAddressRequestDto
-{
-}
-
-public class UpdateAddressResponseDto
-{
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+    public string Country { get; set; } = null!;
+    public string City { get; set; } = null!;
+    public string StreetAddress { get; set; } = null!;
+    public string ZipCode { get; set; } = null!;
+    public double Longitude { get; set; }
+    public double Latitude { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

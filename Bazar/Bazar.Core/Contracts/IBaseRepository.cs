@@ -14,7 +14,7 @@ public interface IBaseRepository<T> where T : class
     T? FindSingle(Expression<Func<T?, bool>> criteria, IList<string>? includes = null);
     Task<T> FindSingleAsync(Expression<Func<T, bool>> criteria, IList<string>? includes = null);
 
-    Task<T> FindFirstAsync(Expression<Func<T, bool>> criteria, IList<string>? includes = null);
+    Task<T?> FindFirstAsync(Expression<Func<T?, bool>> criteria, IList<string>? includes = null);
 
     IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, IList<string>? includes = null);
     IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int? take, int? skip);
@@ -30,22 +30,24 @@ public interface IBaseRepository<T> where T : class
 
 
     T Create(T entity);
-    IEnumerable<T> CreateRange(IEnumerable<T> entities);
+    void CreateRange(IEnumerable<T> entities);
 
     Task<T> CreateAsync(T entity);
-    Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities);
+    void CreateRangeAsync(IEnumerable<T> entities);
 
     T Update(T entity);
-    IEnumerable<T> UpdateRange(IEnumerable<T> entity);
-    IEnumerable<T> UpdateRange(Expression<Func<T, bool>> criteria);
+    void UpdateRange(IEnumerable<T> entity);
+    void UpdateRange(Expression<Func<T, bool>> criteria);
+    
+    T UpdateAsync(T entity);
 
     bool Delete(Guid id);
-    bool Delete(T entity);
+    void Delete(T entity);
     bool Delete(Expression<Func<T, bool>> criteria);
 
-    bool DeleteRange(IEnumerable<Guid> ids);
-    bool DeleteRange(IEnumerable<T> entity);
-    bool DeleteRange(Expression<Func<T, bool>> criteria);
+    void DeleteRange(IEnumerable<Guid> ids);
+    void DeleteRange(IEnumerable<T> entity);
+    void DeleteRange(Expression<Func<T, bool>> criteria);
 
     T Attach(T entity);
     IEnumerable<T> AttachRange(IEnumerable<T> entities);

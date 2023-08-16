@@ -2,7 +2,7 @@ namespace Bazar.Core.Models;
 
 public class ExternalAuthOptions
 {
-    public const string ExternalAuth = "ExternalAuthModel";
+    public const string ExternalAuth = "ExternalAuth";
 
     public string GoogleClientKey { get; set; } = string.Empty;
     public string GoogleClientSecret { get; set; } = string.Empty;

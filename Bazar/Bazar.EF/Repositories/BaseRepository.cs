@@ -1,14 +1,8 @@
 using System.Linq.Expressions;
 using Bazar.Core.Constants;
 using Bazar.Core.Contracts;
-using Bazar.Core.Entities;
-using Bazar.Core.Models;
-using Bazar.Core.Interfaces;
 using Bazar.EF.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Server.IIS;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bazar.EF.Repositories;
 
@@ -96,7 +90,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return result;
     }
 
-    public async Task<T> FindFirstAsync(Expression<Func<T, bool>> criteria, IList<string>? includes = null)
+    public async Task<T?> FindFirstAsync(Expression<Func<T?, bool>> criteria, IList<string>? includes = null)
     {
         IQueryable<T> query = _dbContext.Set<T>();
         includes ??= new List<string>();
@@ -104,11 +98,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
             currentQueryValue.Include(include));
 
         var result = await query.SingleOrDefaultAsync(criteria);
-
-        if (result == null)
-        {
-            throw new ArgumentException("Entity with that criteria not found");
-        }
 
         return result;
     }

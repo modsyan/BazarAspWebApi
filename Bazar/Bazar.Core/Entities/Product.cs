@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using Bazar.Core.Entities.Base;
 using Bazar.Core.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bazar.Core.Entities;
 
@@ -37,3 +39,12 @@ public class Product : BaseModel
     [Required] public User Crafter { get; set; }
 }
 
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
+{
+    public void Configure(EntityTypeBuilder<Product> builder)
+    {
+        builder
+            .Property(p => p.Id)
+            .HasDefaultValueSql("NEWSEQUENTIALID()");
+    }
+}

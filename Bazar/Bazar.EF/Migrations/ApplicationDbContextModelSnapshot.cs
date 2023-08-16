@@ -68,6 +68,30 @@ namespace Bazar.EF.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("Bazar.Core.Entities.Block", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("BlockedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("BlockedUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlockerUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockedUserId");
+
+                    b.HasIndex("BlockerUserId");
+
+                    b.ToTable("Blocks");
+                });
+
             modelBuilder.Entity("Bazar.Core.Entities.Cart", b =>
                 {
                     b.Property<Guid>("Id")
@@ -822,21 +846,6 @@ namespace Bazar.EF.Migrations
 
             modelBuilder.Entity("UserUser", b =>
                 {
-                    b.Property<Guid>("BlacklistId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BlacklistId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserUser");
-                });
-
-            modelBuilder.Entity("UserUser1", b =>
-                {
                     b.Property<Guid>("FollowersId")
                         .HasColumnType("uniqueidentifier");
 
@@ -847,7 +856,7 @@ namespace Bazar.EF.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("UserUser1");
+                    b.ToTable("UserUser");
                 });
 
             modelBuilder.Entity("Bazar.Core.Entities.Address", b =>
@@ -859,6 +868,25 @@ namespace Bazar.EF.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Bazar.Core.Entities.Block", b =>
+                {
+                    b.HasOne("Bazar.Core.Entities.User", "BlockedUser")
+                        .WithMany("BlockedByUsers")
+                        .HasForeignKey("BlockedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Bazar.Core.Entities.User", "BlockerUser")
+                        .WithMany("BlockedUsers")
+                        .HasForeignKey("BlockerUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BlockedUser");
+
+                    b.Navigation("BlockerUser");
                 });
 
             modelBuilder.Entity("Bazar.Core.Entities.CartItem", b =>
@@ -1145,21 +1173,6 @@ namespace Bazar.EF.Migrations
                 {
                     b.HasOne("Bazar.Core.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("BlacklistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Bazar.Core.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UserUser1", b =>
-                {
-                    b.HasOne("Bazar.Core.Entities.User", null)
-                        .WithMany()
                         .HasForeignKey("FollowersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1212,6 +1225,10 @@ namespace Bazar.EF.Migrations
 
             modelBuilder.Entity("Bazar.Core.Entities.User", b =>
                 {
+                    b.Navigation("BlockedByUsers");
+
+                    b.Navigation("BlockedUsers");
+
                     b.Navigation("Chats");
 
                     b.Navigation("Orders");

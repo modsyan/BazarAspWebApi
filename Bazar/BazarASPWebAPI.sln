@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bazar.Web.Mvc", "Bazar.Web.Mvc\Bazar.Web.Mvc.csproj", "{3499B879-33F0-44D1-9556-D062E5EE32CC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,9 +35,5 @@ Global
 		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F119A83-CF9A-4278-82FD-0604041FB5D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3499B879-33F0-44D1-9556-D062E5EE32CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3499B879-33F0-44D1-9556-D062E5EE32CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3499B879-33F0-44D1-9556-D062E5EE32CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3499B879-33F0-44D1-9556-D062E5EE32CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

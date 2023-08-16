@@ -31,14 +31,14 @@ public class AuthController : ControllerBase
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginUserRequestDto dto)
     {
-        var user = await _authService.Login(dto.LoginIdentifier, dto.Password);
-        if (user == null) return BadRequest("Wrong Credentials, Please Try Again");
-        var userResponse = _mapper.Map<LoginUserResponseDto>(user);
-        userResponse.Token = await _authService.GenerateToken(user);
+        var loggedUser = await _authService.Login(dto.LoginIdentifier, dto.Password);
+        var user = _mapper.Map<LoginUserResponseDto>(loggedUser);
+        var token = await _authService.GenerateToken(loggedUser);
         return Ok(new
             {
                 Success = true,
-                userResponse
+                user,
+                token
             }
         );
     }
@@ -46,11 +46,21 @@ public class AuthController : ControllerBase
     [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequestDto dto)
     {
-        var user = _mapper.Map<User>(dto);
-        var userCreated = await _authService.Register(user, dto.Password);
-        // if (userCreated == null) return BadRequest("Invalid Email or Password");
-        var userToSend = _mapper.Map<RegisterUserResponseDto>(user);
-        return Created("", userToSend);
+        var newUser = _mapper.Map<User>(dto);
+        var userCreated = await _authService.Register(newUser, dto.Password);
+        var user = _mapper.Map<RegisterUserResponseDto>(userCreated);
+        var token = await _authService.GenerateToken(userCreated);
+
+        return CreatedAtAction(
+            "GetById",
+            new { controller = "User", id = user.Id },
+            new
+            {
+                success = true,
+                user,
+                token
+            }
+        );
     }
 
     [HttpPost("ResetPassword/{email}")]

@@ -16,20 +16,20 @@ public class WishlistController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("/")]
+    [HttpGet]
     public Task<IActionResult> Get()
     {
         throw new NotImplementedException();
     }
 
-    [HttpPost("{productId}")]
-    public Task<IActionResult> Create(string productId)
+    [HttpPost("{productId:guid}")]
+    public Task<IActionResult> Create(Guid productId)
     {
         throw new NotImplementedException();
     }
 
-    [HttpDelete("{productId}/")]
-    public Task<IActionResult> Remove(string productId)
+    [HttpDelete("{productId:guid}")]
+    public Task<IActionResult> Remove(Guid productId)
     {
         throw new NotImplementedException();
     }

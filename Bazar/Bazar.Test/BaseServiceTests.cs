@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Bazar.Api.Extensions;
+using Bazar.Api.Startup;
 
 namespace Bazar.Test;
 

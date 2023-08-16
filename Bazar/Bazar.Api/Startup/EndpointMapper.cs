@@ -1,6 +1,10 @@
-namespace Bazar.Api.Extensions;
+namespace Bazar.Api.Startup;
 
-public class EndpointMapper
+public static class EndpointMapper
 {
+    public static WebApplication ConfigureEndpoints(this WebApplication app)
+    {
+        return app;
+    }
     
 }

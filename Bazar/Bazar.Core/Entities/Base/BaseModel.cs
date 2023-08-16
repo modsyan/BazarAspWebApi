@@ -5,11 +5,6 @@ namespace Bazar.Core.Entities.Base;
 
 public class BaseModel
 {
-    protected BaseModel()
-    {
-        // Id = Guid.NewGuid();
-    }
-    
     [Key]
     [DatabaseGenerated((DatabaseGeneratedOption.Identity))]
     public Guid Id { get; set; }

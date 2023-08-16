@@ -17,12 +17,13 @@ public class UnitOfWork : IUnitOfWork
     public IBaseRepository<Category> Categories { get; private set; }
     public IBaseRepository<Address> Addresses { get; private set; }
     public IBaseRepository<Faq> Faqs { get; private set; }
-    public IBaseRepository<Post> Posts { get; }
+    public IBaseRepository<Post> Posts { get; private set; }
+    public IBaseRepository<Block> Blocks { get; private set; }
 
     public UnitOfWork(ApplicationDbContext dbContext, IUserRepository users, IProductRepository products,
         IBaseRepository<Cart> carts, IBaseRepository<Order> orders,
         IBaseRepository<Review> reviews, IBaseRepository<Category> categories, IBaseRepository<Address> addresses,
-        IBaseRepository<Faq> faqs)
+        IBaseRepository<Faq> faqs, IBaseRepository<Post> posts, IBaseRepository<Block> blocks)
     {
         _dbContext = dbContext;
         Users = users;
@@ -33,6 +34,8 @@ public class UnitOfWork : IUnitOfWork
         Categories = categories;
         Addresses = addresses;
         Faqs = faqs;
+        Posts = posts;
+        Blocks = blocks;
     }
 
     public void Dispose()

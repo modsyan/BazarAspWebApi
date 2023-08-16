@@ -58,7 +58,7 @@ public class PostController : ControllerBase
         return Ok(postResponse);
     }
 
-    [HttpDelete("{postId}")]
+    [HttpDelete("{postId:guid}")]
     public async Task<IActionResult> Delete(Guid postId)
     {
         _postService.Remove(postId);

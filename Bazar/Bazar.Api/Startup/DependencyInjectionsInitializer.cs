@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Bazar.Api.Startup;
 
-public static class ServiceExtensions
+public static class DependencyInjectionsInitializer
 {
     public static IServiceCollection SingletonServicesRegistrar(this IServiceCollection service)
     {
@@ -39,8 +39,12 @@ public static class ServiceExtensions
         services.AddTransient<IUserRepository, UserRepository>();
 
         services.AddTransient<IAuthService, AuthService>();
+        services.AddTransient<IUserService, UserService>();
         services.AddTransient<IProductService, ProductService>();
         services.AddTransient<IFaqService, FaqService>();
+        
+        services.AddTransient<IAddressService, AddressService>();
+        services.AddTransient<IBlockService, BlockServices>();
 
         return services;
     }

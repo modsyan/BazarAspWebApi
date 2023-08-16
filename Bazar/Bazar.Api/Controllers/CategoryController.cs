@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
-[Route("/api/categories")]
+[Route("api/[controller]")]
 [ApiController]
 [Authorize]
 public class CategoryController : ControllerBase
 {
-    
     private readonly IMapper _mapper;
 
     public CategoryController(IMapper mapper)
@@ -18,47 +17,45 @@ public class CategoryController : ControllerBase
         _mapper = mapper;
     }
 
-
-    [HttpGet("/")]
+    [HttpGet]
     public Task<IActionResult> Get()
     {
         throw new NotImplementedException();
     }
-    
-    [HttpGet("/{id}")]
-    public Task<IActionResult> Get(string id)
+
+    [HttpGet("{id:guid}")]
+    public Task<IActionResult> Get(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    [HttpPost("/")]
+    [HttpPost]
     public Task<IActionResult> Create(CreateCategoryRequestDto dto)
     {
         throw new NotImplementedException();
     }
 
-    [HttpPatch("/{id}")]
-    public Task<IActionResult> Update(string id, UpdateCategoryRequestDto dto)
+    [HttpPatch("{id:guid}")]
+    public Task<IActionResult> Update(Guid id, UpdateCategoryRequestDto dto)
     {
         throw new NotImplementedException();
     }
-    
-    [HttpDelete]
-    public Task<IActionResult> Delete(CreateCategoryRequestDto dto)
+
+    [HttpDelete("{id:guid}")]
+    public Task<IActionResult> Delete(Guid id)
     {
         throw new NotImplementedException();
     }
 
     // Adding and removing Products From Categories
-    
-    [HttpPost("/{categoryId}/products/{productId}")]
-    public Task<IActionResult> AddProduct(string categoryId, string productId)
+    [HttpPost("{categoryId:guid}/products/{productId:guid}")]
+    public Task<IActionResult> AddProduct(Guid categoryId, Guid productId)
     {
         throw new NotImplementedException();
     }
-    
-    [HttpDelete("/{categoryId}/products/{productId}")]
-    public Task<IActionResult> RemoveProduct(string categoryId, string productId)
+
+    [HttpDelete("{categoryId:guid}/products/{productId:guid}")]
+    public Task<IActionResult> RemoveProduct(Guid categoryId, Guid productId)
     {
         throw new NotImplementedException();
     }

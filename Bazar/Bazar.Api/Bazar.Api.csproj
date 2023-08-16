@@ -49,4 +49,8 @@
     <ProjectReference Include="..\Bazar.EF\Bazar.EF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

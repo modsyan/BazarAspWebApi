@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Bazar.Api.Startup.Swagger;
+namespace Bazar.Api.Startup;
 
 public class SwaggerConfiguration : IConfigureOptions<SwaggerGenOptions>
 {

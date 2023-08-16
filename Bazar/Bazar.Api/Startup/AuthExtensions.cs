@@ -11,18 +11,22 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Bazar.Api.Extensions;
+namespace Bazar.Api.Startup;
 
 public static class AuthExtensions
 {
     public static IServiceCollection DbContextRegistrar(this IServiceCollection services, IConfiguration configuration)
     {
         return services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                optionsBuilder => optionsBuilder.MigrationsAssembly(
-                    typeof(ApplicationDbContext).Assembly.FullName)
-            )
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection") ??
+                                       throw new ArgumentException("There is no Connection String Provided");
+                options.UseSqlServer(
+                    connectionString,
+                    optionsBuilder => optionsBuilder.MigrationsAssembly(
+                        typeof(ApplicationDbContext).Assembly.FullName)
+                );
+            }
         );
     }
 
@@ -35,7 +39,13 @@ public static class AuthExtensions
         configuration.GetSection(JwtOptions.Jwt).Bind(jwtOptions);
 
         services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
             .AddJwtBearer(x =>
             {
                 x.TokenValidationParameters = new TokenValidationParameters
@@ -98,14 +108,11 @@ public static class AuthExtensions
 
     public static IServiceCollection CorsRegistrar(this IServiceCollection services)
     {
-        services.AddCors(option =>
-            option.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                }
-            )
+        services.AddCors(
+            option =>
+                option.AddPolicy("AllowAll",
+                    builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }
+                )
         );
         return services;
     }

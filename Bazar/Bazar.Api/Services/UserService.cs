@@ -14,7 +14,7 @@ public class UserService : IUserService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<User> Get(Guid userId)
+    public async Task<User?> Get(Guid userId)
     {
         return await _unitOfWork.Users.GetAsync(userId);
     }

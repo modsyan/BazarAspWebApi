@@ -30,9 +30,11 @@ public class AuthService : IAuthService
 
     public async Task<User> Register(User user, string password)
     {
+        
+        // TODO: USE MANGER TO ONLY USE UNIQUELY EMAIL AND USERNAME
         // if (user.Email != null && await _userManager.FindByEmailAsync(user.Email) is not null)
         //     return new 
-        // TODO: USE MANGER TO ONLY USE UNIQUELY EMAIL AND USERNAME
+        
         user.PasswordHash = HashingPassword.Hash(password);
         var createdUser = await _unitOfWork.Users.CreateAsync(user);
         await _unitOfWork.CompleteAsync();
@@ -71,7 +73,7 @@ public class AuthService : IAuthService
         var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.Email!),
-                new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             }
             .Union(userClaims)
             .Union(roleClaims);

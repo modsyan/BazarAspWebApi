@@ -33,9 +33,7 @@ public class FaqService : IFaqService
 
     public void Remove(Guid id)
     {
-        var result = _unitOfWork.Faqs.Delete(id);
-        if (!result)
-            throw new AggregateException($"There is No Faq With id: {id} to delete.");
+        _unitOfWork.Faqs.Delete(id);
         _unitOfWork.Complete();
     }
 }

@@ -14,11 +14,13 @@ public class AutoMappingProfile : Profile
         CreateMap<RegisterUserRequestDto, User>();
         CreateMap<User, RegisterUserResponseDto>();
         CreateMap<User, LoginUserResponseDto>();
+        CreateMap<User, GetUserMinimalResponseDto>();
+
 
         //PRODUCTS
         CreateMap<CreateProductRequestDto, Product>();
         CreateMap<Product, CreateProductResponseDto>();
-        
+
         //POSTS
         CreateMap<CreateEditPostRequestDto, Post>();
         CreateMap<Post, CreateEditPostResponseDto>();
@@ -26,5 +28,10 @@ public class AutoMappingProfile : Profile
 
         //FAQS
 
+        // Addresses
+        CreateMap<IEnumerable<Address>, IEnumerable<AddressDto>>().IncludeAllDerived();
+        CreateMap<IEnumerable<AddressDto>, IEnumerable<Address>>().IncludeAllDerived();
+        CreateMap<Address, AddressDto>();
+        CreateMap<AddressDto, Address>();
     }
 }

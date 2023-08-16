@@ -18,39 +18,39 @@ public class CartController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("/")]
-    public Task<IActionResult> GetCart()
+    [HttpGet]
+    public Task<IActionResult> Get()
     {
         throw new NotImplementedException();
     }
 
-    [HttpDelete("/{cartId}")]
-    public Task<IActionResult> Delete(string cartId)
+    [HttpDelete("{cartId:guid}")]
+    public Task<IActionResult> Delete(Guid cartId)
     {
         throw new NotImplementedException();
     }
 
-    [HttpGet("/items/{itemId}")]
-    public Task<IActionResult> GetItem(string itemId)
+    [HttpGet("items/{itemId:guid}")]
+    public Task<IActionResult> GetItem(Guid itemId)
     {
         throw new NotImplementedException();
     }
 
-    [HttpPost("/items")]
+    [HttpPost("items")]
     public Task<IActionResult> AddItem(AddItemCartRequestDto dto)
     {
         throw new NotImplementedException();
     }
 
-    [HttpPut("/items/{itemId}")]
-    public Task<IActionResult> UpdateItem(string itemId, UpdateItemCartRequestDto dto)
+    [HttpPut("items/{itemId:guid}")]
+    public Task<IActionResult> UpdateItem(Guid itemId, UpdateItemCartRequestDto dto)
     {
         // TODO: Update the quantity or other details of a cart item.
         throw new NotImplementedException();
     }
 
-    [HttpDelete("/items/{itemId}")]
-    public Task<IActionResult> RemoveItem(string itemId)
+    [HttpDelete("items/{itemId:guid}")]
+    public Task<IActionResult> RemoveItem(Guid itemId)
     {
         throw new NotImplementedException();
     }

@@ -1,22 +1,15 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 [Authorize]
-public class CategoryController : ControllerBase
+public class CategoryController : BaseController<CategoryController, ICategoryService>
 {
-    private readonly IMapper _mapper;
-
-    public CategoryController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public Task<IActionResult> Get()
     {

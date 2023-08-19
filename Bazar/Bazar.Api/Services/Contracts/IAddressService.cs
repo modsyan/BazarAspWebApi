@@ -1,3 +1,4 @@
+using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 

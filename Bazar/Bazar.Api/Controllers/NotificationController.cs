@@ -1,22 +1,14 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
-
 [Authorize]
-[ApiController]
-[Route("/api/[controller]")]
-public class NotificationController: ControllerBase
+public class NotificationController : BaseController<NotificationController, INotificationService>
 {
-    private readonly IMapper _mapper;
-
-    public NotificationController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-    
     //Pagination
     [HttpGet("{page:int}")]
     public Task<IActionResult> Get(int page = 0)

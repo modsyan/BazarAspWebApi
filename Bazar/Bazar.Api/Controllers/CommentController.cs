@@ -1,4 +1,6 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,17 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
 [Route("api/{resourceType}/{resourceId}/[controller]")]
-public class CommentController : ControllerBase
+public class CommentController : BaseController<CommentController, ICommentService>
 {
-    private readonly IMapper _mapper;
-
-    public CommentController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Get(string resourceType, string resourceId)
     {

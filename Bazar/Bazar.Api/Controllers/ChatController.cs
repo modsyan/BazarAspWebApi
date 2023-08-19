@@ -1,17 +1,12 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
-[Route("api/[controller]")]
-public class ChatController : ControllerBase
+public class ChatController : BaseController<ChatController, IChatService>
 {
-    private readonly IMapper _mapper;
-    public ChatController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
 }

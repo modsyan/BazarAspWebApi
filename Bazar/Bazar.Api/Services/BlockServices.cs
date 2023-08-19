@@ -1,19 +1,18 @@
 using System.ComponentModel;
 using System.Globalization;
 using Bazar.Api.Services.Contracts;
+using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Bazar.Api.Services;
 
-public class BlockServices : IBlockService
+public class BlockServices :  BaseService ,IBlockService
 {
-    private readonly IUnitOfWork _unitOfWork;
 
-    public BlockServices(IUnitOfWork unitOfWork)
+    public BlockServices(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<Block>> GetBlocked(Guid userId)
@@ -25,7 +24,7 @@ public class BlockServices : IBlockService
         //     blockedUsers.Add(await _unitOfWork.Users
         //         .FindSingleAsync(u => u.Id == block.BlockedUserId));
 
-        var blocks = await _unitOfWork.Blocks.FindAllAsync(block => block.BlockerUserId == userId,
+        var blocks = await UnitOfWork.Blocks.FindAllAsync(block => block.BlockerUserId == userId,
             new List<string> { "BlockedUser" });
 
         return blocks;
@@ -42,26 +41,26 @@ public class BlockServices : IBlockService
         // return blockedUsers;
 
 
-        return await _unitOfWork.Blocks.FindAllAsync(block => block.BlockedUserId == userId,
+        return await UnitOfWork.Blocks.FindAllAsync(block => block.BlockedUserId == userId,
             new List<string> { "BlockerUser" });
     }
 
 
     public async Task<bool> RemoveList(Guid userId)
     {
-        var user = await _unitOfWork.Users.GetAsync(userId, new List<string> { "blacklist" });
+        var user = await UnitOfWork.Users.GetAsync(userId, new List<string> { "blacklist" });
         if (user is null) return false;
         // user.Blacklist = null;
-        await _unitOfWork.CompleteAsync();
+        await UnitOfWork.CompleteAsync();
         return true;
     }
 
     public async Task<bool> BlockUserAsync(Guid userId, Guid targetUserId)
     {
-        if (userId == targetUserId) return false; // you cannot block yourself
+        if (userId == targetUserId) return false;
 
-        var curUser = await _unitOfWork.Users.GetAsync(userId);
-        var targetUser = await _unitOfWork.Users.GetAsync(targetUserId);
+        var curUser = await UnitOfWork.Users.GetAsync(userId);
+        var targetUser = await UnitOfWork.Users.GetAsync(targetUserId);
 
         if (curUser is null || targetUser is null) return false;
 
@@ -69,41 +68,35 @@ public class BlockServices : IBlockService
         {
             BlockerUserId = userId,
             BlockedUserId = targetUserId,
-            // BlockerUser = curUser,
-            // BlockedUser = targetUser,
         };
-
-        var isBlocked = (await _unitOfWork.Blocks.FindFirstAsync(b =>
-            b != null && b.BlockerUserId == userId && b.BlockedUserId == targetUserId)) is not null;
-
-
+        
+        var isBlocked = await UnitOfWork.Blocks.FindFirstAsync(b =>
+            (b != null && b.BlockerUserId == userId && b.BlockedUserId == targetUserId)) is not null;
+        
         if (isBlocked) return false;
-
-        await _unitOfWork.Blocks.CreateAsync(block);
-        await _unitOfWork.CompleteAsync();
+        
+        await UnitOfWork.Blocks.CreateAsync(block);
+        await UnitOfWork.CompleteAsync();
+        
         return true;
-
-        // currentUser.Blacklist ??= new List<User>();
-        // if (currentUser.Blacklist.Any(user => user.Id == targetUserId)) return null;
-
-        // return currentUser.Blacklist;
     }
 
     public async Task<bool> UnblockUserAsync(Guid userId, Guid targetUserId)
     {
-        var currentUser = await _unitOfWork.Users.GetAsync(userId, new List<string> { "blacklist" });
-        if (currentUser is null) throw new ArgumentException("user not found to unblock another user");
+        if (userId == targetUserId) return false;
 
-        // if (currentUser.Blacklist is null ||
-        // currentUser.Blacklist.Any(user => user.Id == targetUserId)) return null;
+        var curUser = await UnitOfWork.Users.GetAsync(userId);
+        var targetUser = await UnitOfWork.Users.GetAsync(targetUserId);
+        
+        if (curUser is null || targetUser is null) return false;
 
-        var targetUser = await _unitOfWork.Users.GetAsync(targetUserId);
-        if (targetUser is null) return false;
+        var blockEntity = await UnitOfWork.Blocks.FindFirstAsync(b =>
+            (b != null && b.BlockerUserId == userId && b.BlockedUserId == targetUserId));
 
-        // currentUser.Blacklist.Remove(targetUser);
-        await _unitOfWork.CompleteAsync();
-
-        // return currentUser.Blacklist;
+        if (blockEntity == null) return false;
+        
+        UnitOfWork.Blocks.Delete(blockEntity);
+        await UnitOfWork.CompleteAsync();
         return true;
     }
 }

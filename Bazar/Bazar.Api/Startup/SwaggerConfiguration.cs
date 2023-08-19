@@ -37,21 +37,22 @@ public class SwaggerConfiguration : IConfigureOptions<SwaggerGenOptions>
             BearerFormat = "JWT",
         });
 
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer",
-                    },
-                    Name = "Bearer",
-                    In = ParameterLocation.Header,
-                },
-                new List<string>()
-            }
-        });
+        // options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        // {
+        //     {
+        //         new OpenApiSecurityScheme
+        //         {
+        //             Reference = new OpenApiReference
+        //             {
+        //                 Type = ReferenceType.SecurityScheme,
+        //                 Id = "Bearer",
+        //             },
+        //             Name = "Bearer",
+        //             In = ParameterLocation.Header,
+        //         },
+        //         new List<string>()
+        //     }
+        // }
+    // );
     }
 }

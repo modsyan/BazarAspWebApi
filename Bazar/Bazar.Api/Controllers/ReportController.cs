@@ -1,21 +1,14 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ReportController : ControllerBase
+public class ReportController : BaseController<ReportController, IReportService>
 {
-    private readonly IMapper _mapper;
-
-    public ReportController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpPost]
     public Task<IActionResult> Add([FromBody] CreateComplaintRequestDto dto)
     {
@@ -23,7 +16,6 @@ public class ReportController : ControllerBase
     }
 
     //ADMIN ONLY 
-
     [HttpGet]
     [Authorize(Roles = "ADMIN")]
     public Task<IActionResult> Get()

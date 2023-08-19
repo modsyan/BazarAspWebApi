@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.Internal.Mappers;
+using Bazar.Api.Controllers.Base;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.Constants;
 using Bazar.Core.DTOs;
@@ -12,30 +13,20 @@ using NuGet.Protocol;
 
 namespace Bazar.Api.Controllers;
 
-[ApiController]
 [Route("/api/[controller]")]
-public class FaqController : ControllerBase
+public class FaqController : BaseController<FaqController, IFaqService>
 {
-    private readonly IFaqService _faqService;
-    private readonly Mapper _mapper;
-
-    public FaqController(IFaqService faqService, Mapper mapper)
-    {
-        _faqService = faqService;
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         // map form list to list --> TODO: FIX BUG HERE
-        return Ok(_mapper.Map<GetFaqsResponseDto>(await _faqService.Get()));
+        return Ok(Mapper.Map<GetFaqsResponseDto>(await Service.Get()));
     }
 
     [HttpGet("/{faqId:guid}")]
     public async Task<IActionResult> Get([FromRoute] Guid faqId)
     {
-        return Ok(_mapper.Map<GetFaqsResponseDto>(await _faqService.Get(faqId)));
+        return Ok(Mapper.Map<GetFaqsResponseDto>(await Service.Get(faqId)));
     }
 
     // Admin 
@@ -43,16 +34,16 @@ public class FaqController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] CreateEditFaqRequestDto dto)
     {
-        var newFaq = _mapper.Map<Faq>(dto);
-        var createdFaq = await _faqService.Add(newFaq);
-        return Ok(_mapper.Map<CreateEditFaqResponseDto>(createdFaq));
+        var newFaq = Mapper.Map<Faq>(dto);
+        var createdFaq = await Service.Add(newFaq);
+        return Ok(Mapper.Map<CreateEditFaqResponseDto>(createdFaq));
     }
 
     [Authorize(Policy = "Admin")]
     [HttpDelete("/{faqId:guid}")]
     public async Task<IActionResult> Remove([FromQuery] Guid faqId)
     {
-        _faqService.Remove(faqId);
+        Service.Remove(faqId);
         return Ok("Removed Successfully");
     }
 }

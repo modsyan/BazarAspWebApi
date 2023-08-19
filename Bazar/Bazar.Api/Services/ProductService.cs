@@ -1,65 +1,63 @@
 using Bazar.Api.Services.Contracts;
+using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 
 namespace Bazar.Api.Services;
 
-public class ProductService : IProductService
+public class ProductService : BaseService, IProductService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public ProductService(IUnitOfWork unitOfWork)
+    public ProductService(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<Product?> GetById(Guid id)
     {
-        return await _unitOfWork.Products.GetAsync(id);
+        return await UnitOfWork.Products.GetAsync(id);
     }
 
     public async Task<IEnumerable<Product?>> GetAll()
     {
-        return await _unitOfWork.Products.GetAsync();
+        return await UnitOfWork.Products.GetAsync();
     }
 
     public async Task<Product?> FindByName(string title)
     {
-        return await _unitOfWork.Products.FindFirstAsync(e => e.Title == title);
+        return await UnitOfWork.Products.FindFirstAsync(e => e.Title == title);
     }
 
     public async Task<IEnumerable<Product?>> FindAllByName(string title)
     {
-        return await _unitOfWork.Products.FindAllAsync(e => e.Title == title);
+        return await UnitOfWork.Products.FindAllAsync(e => e.Title == title);
     }
 
     public Product Create(Product product)
     {
-        return _unitOfWork.Products.Create(product);
+        return UnitOfWork.Products.Create(product);
     }
 
     public Product Update(Product product)
     {
-        return _unitOfWork.Products.Update(product)!;
+        return UnitOfWork.Products.Update(product)!;
     }
 
     public void Delete(Guid id)
     {
-        _unitOfWork.Products.Delete(id);
+        UnitOfWork.Products.Delete(id);
     }
 
     public void DeleteByPrice(double price)
     {
-        _unitOfWork.Products.Delete(p => p.RegularPrice == price);
+        UnitOfWork.Products.Delete(p => p.RegularPrice == price);
     }
 
     public void Delete(Product product)
     {
-        _unitOfWork.Products.Delete(product);
+        UnitOfWork.Products.Delete(product);
     }
 
     public void DeleteRange(Product product)
     {
-        _unitOfWork.Products.Delete(product);
+        UnitOfWork.Products.Delete(product);
     }
 }

@@ -1,3 +1,5 @@
+using Bazar.Api.Controllers;
+using Bazar.Api.Controllers.Base;
 using Bazar.Api.Helpers;
 using Bazar.Api.Middlewares;
 using Bazar.Api.Services;
@@ -15,6 +17,7 @@ public static class DependencyInjectionsInitializer
 {
     public static IServiceCollection SingletonServicesRegistrar(this IServiceCollection service)
     {
+        service.AddSingleton<LoggerFactory>();
         return service;
     }
 
@@ -45,7 +48,7 @@ public static class DependencyInjectionsInitializer
         
         services.AddTransient<IAddressService, AddressService>();
         services.AddTransient<IBlockService, BlockServices>();
-
+        
         return services;
     }
 

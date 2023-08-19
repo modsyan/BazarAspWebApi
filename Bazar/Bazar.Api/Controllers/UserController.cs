@@ -1,4 +1,5 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
@@ -7,24 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
-[ApiController]
-// [Authorize]
-[AllowAnonymous]
-[Route("api/[controller]")]
-public class UserController : ControllerBase
+[Authorize]
+public class UserController : BaseController<UserController, IUserService>
 {
-    private readonly IMapper _mapper;
-    private readonly IUserService _userService;
-    private readonly ILogger<UserController> _logger;
-
-    public UserController(IMapper mapper, IUserRepository userRepository, IUserService userService,
-        ILogger<UserController> logger)
-    {
-        _mapper = mapper;
-        _userService = userService;
-        _logger = logger;
-    }
-
     [HttpGet]
     public Task<IActionResult> Get()
     {
@@ -36,7 +22,7 @@ public class UserController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var user = await _userService.Get(id);
+        var user = await Service.Get(id);
 
         return Ok(new
         {
@@ -50,9 +36,9 @@ public class UserController : ControllerBase
     {
         var userId = User.Claims.FirstOrDefault(user => user.Type == "Id")?.Value!;
 
-        _logger.Log(LogLevel.Trace, userId);
+        Logger.Log(LogLevel.Trace, userId);
 
-        var user = await _userService.Get(Guid.Parse((ReadOnlySpan<char>)userId));
+        var user = await Service.Get(Guid.Parse((ReadOnlySpan<char>)userId));
         return Ok(user);
     }
 }

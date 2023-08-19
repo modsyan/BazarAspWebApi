@@ -1,10 +1,10 @@
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
-[ApiController]
 [Route("api/posts/[controller]")]
-public class TagController: ControllerBase
+public class TagController : BaseController<TagController, ITagService>
 {
-    
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Bazar.Core.Models;
@@ -14,37 +15,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     // [Authorize(AuthenticationSchemes = "Bearer")]
-    [AllowAnonymous] 
-    public class ProductsController : ControllerBase
+    [AllowAnonymous]
+    public class ProductsController : BaseController<ProductsController, IProductService>
     {
-        
-        private readonly IMapper _mapper;
-        private readonly IProductService _productService;
 
-        public ProductsController(IProductService productService, IMapper mapper)
-        {
-            _productService = productService;
-            _mapper = mapper;
-        }
-
-        
         [HttpGet]
         public async Task<IActionResult> Get() => Ok(
-            await _productService.GetAll()
+            await Service.GetAll()
         );
-        
+
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> Get(Guid id) => Ok(
-            await _productService.GetById(id)
+            await Service.GetById(id)
         );
-        
+
 
         [HttpGet("Search{query}")]
         public IActionResult GetByName([FromBody] string name, string query) => Ok(
-            _productService.FindByName(name)
+            Service.FindByName(name)
         );
 
 

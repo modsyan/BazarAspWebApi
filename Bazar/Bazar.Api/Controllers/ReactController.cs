@@ -1,21 +1,15 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
 [Route("api/{resourceType}/{resourceId}/[controller]")]
-public class ReactController : ControllerBase
+public class ReactController : BaseController<ReactController, IReactService>
 {
-    private readonly IMapper _mapper;
-
-    public ReactController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Get(string resourceType, string resourceId)
     {
@@ -49,7 +43,7 @@ public class ReactController : ControllerBase
             return BadRequest("Invalid resource type");
         }
     }
-    
+
     [HttpPut]
     public async Task<IActionResult> Update(string resourceType, string resourceId)
     {
@@ -66,7 +60,7 @@ public class ReactController : ControllerBase
             return BadRequest("Invalid resource type");
         }
     }
-    
+
 
     [HttpDelete]
     public async Task<IActionResult> Remove(string resourceType, string resourceId)

@@ -1,21 +1,15 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
 [Route("api/users/")]
-public class FollowerController : ControllerBase
+public class FollowerController : BaseController<FollowerController, IFollowerService>
 {
-    private readonly IMapper _mapper;
-
-    public FollowerController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet("{userId}/Followers")]
     public Task<IActionResult> Followers(string userId)
     {

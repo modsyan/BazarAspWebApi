@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Bazar.Api.Helpers;
 using Bazar.Api.Services.Contracts;
+using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
@@ -12,32 +13,27 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Bazar.Api.Services;
 
-public class AuthService : IAuthService
+public class AuthService : BaseService, IAuthService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly JwtOptions _jwt;
-    private readonly IConfiguration _configuration;
     private readonly UserManager<User> _userManger;
 
     public AuthService(IUnitOfWork unitOfWork, UserManager<User> userManager, IOptions<JwtOptions> jwt,
-        IConfiguration configuration, UserManager<User> userManger)
+        UserManager<User> userManger) : base(unitOfWork)
     {
-        _configuration = configuration;
         _userManger = userManger;
         _jwt = jwt.Value;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<User> Register(User user, string password)
     {
-        
         // TODO: USE MANGER TO ONLY USE UNIQUELY EMAIL AND USERNAME
         // if (user.Email != null && await _userManager.FindByEmailAsync(user.Email) is not null)
         //     return new 
-        
+
         user.PasswordHash = HashingPassword.Hash(password);
-        var createdUser = await _unitOfWork.Users.CreateAsync(user);
-        await _unitOfWork.CompleteAsync();
+        var createdUser = await UnitOfWork.Users.CreateAsync(user);
+        await UnitOfWork.CompleteAsync();
 
         if (createdUser == null)
             throw new ArgumentException("Cannot Register new account, please try again.");
@@ -50,8 +46,8 @@ public class AuthService : IAuthService
         {
             throw new ArgumentException("missing LoginIdentifier of Password");
         }
-        
-        var user = await _unitOfWork.Users.FindSingleAsync(user =>
+
+        var user = await UnitOfWork.Users.FindSingleAsync(user =>
             user != null && (user.Email == loginIdentifier || user.UserName == loginIdentifier));
 
         if (user == null ||

@@ -1,21 +1,16 @@
+using System.Xml;
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
 [Route("api/[controller]/items/")]
-public class WishlistController : ControllerBase
+public class WishlistController : BaseController<WishlistController, IWishlistService>
 {
-    private readonly IMapper _mapper;
-
-    public WishlistController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public Task<IActionResult> Get()
     {

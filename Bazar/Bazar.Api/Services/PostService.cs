@@ -1,23 +1,22 @@
 using System.Security.Claims;
 using Bazar.Api.Services.Contracts;
+using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.EF.Repositories;
 
 namespace Bazar.Api.Services;
 
-public class PostService: IPostService
+public class PostService: BaseService,IPostService
 {
-    private readonly IUnitOfWork _unitOfWork;
 
-    public PostService(IUnitOfWork unitOfWork)
+    public PostService(IUnitOfWork unitOfWork): base(unitOfWork)
     {
-        _unitOfWork = unitOfWork;
     }
 
     public Post Crate(Post post)
     {
-        var createdPost = _unitOfWork.Posts.Create(post);
+        var createdPost = UnitOfWork.Posts.Create(post);
         
         // var identity = HttpContent.User.Identity as ClaimsIdentity;
         // IEnumerable<Cliam> cliams = identity.Cliams;
@@ -27,25 +26,25 @@ public class PostService: IPostService
 
     public Post Update(Guid id, Post post)
     {
-        var updatedPost = _unitOfWork.Posts.Update(post);
-        _unitOfWork.Complete();
+        var updatedPost = UnitOfWork.Posts.Update(post);
+        UnitOfWork.Complete();
         return updatedPost;
     }
 
     public void Remove(Guid id)
     {
-        _unitOfWork.Posts.Delete(id);
-        _unitOfWork.Complete();
+        UnitOfWork.Posts.Delete(id);
+        UnitOfWork.Complete();
     }
 
     public async Task<IEnumerable<Post>> GetAll()
     {
-        return await _unitOfWork.Posts.GetAsync();
+        return await UnitOfWork.Posts.GetAsync();
     }
 
     public async Task<Post> FindById(Guid id)
     {
-        return await _unitOfWork.Posts.GetAsync(id);
+        return await UnitOfWork.Posts.GetAsync(id);
     }
 
 

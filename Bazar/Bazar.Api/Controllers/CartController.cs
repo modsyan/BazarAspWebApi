@@ -1,4 +1,6 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
+using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Bazar.Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -8,16 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
-[Route("api/[controller]")]
-public class CartController : ControllerBase
+public class CartController : BaseController<CartController, ICartService>
 {
-    private readonly IMapper _mapper;
-    public CartController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public Task<IActionResult> Get()
     {

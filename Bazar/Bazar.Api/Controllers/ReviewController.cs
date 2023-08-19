@@ -1,4 +1,5 @@
 using AutoMapper;
+using Bazar.Api.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
@@ -6,17 +7,9 @@ using NuGet.Protocol.Plugins;
 namespace Bazar.Api.Controllers;
 
 [Authorize]
-[ApiController]
 [Route("api/products/{productId}/[controller]")]
-public class ReviewController: ControllerBase
+public class ReviewController : BaseController<ReviewController, IMapper>
 {
-    private readonly IMapper _mapper;
-
-    public ReviewController(IMapper mapper)
-    {
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public Task<IActionResult> Get(string productId)
     {

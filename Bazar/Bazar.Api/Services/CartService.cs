@@ -1,17 +1,15 @@
 using Bazar.Api.Services.Contracts;
+using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 
 namespace Bazar.Api.Services;
 
-public class CartService: ICartService
+public class CartService : BaseService, ICartService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CartService(IUnitOfWork unitOfWork)
+    public CartService(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<Cart> AddItem(CartItem item)

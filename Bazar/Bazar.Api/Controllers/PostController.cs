@@ -18,42 +18,62 @@ namespace Bazar.Api.Controllers;
 public class PostController : BaseController<PostController, IPostService>
 {
     [HttpGet]
-    public async Task<IActionResult> Get() => Ok(
-        await Service.GetAll()
-    );
+    public async Task<IActionResult> Get()
+    {
+        var posts = await Service.GetAll(UserId);
+        return Ok(new
+        {
+            sucess = true,
+            posts = posts.Select(post => Mapper.Map<PostResponseDto>(post))
+        });
+    }
 
-    [HttpGet("/{postId:guid}")]
-    public async Task<IActionResult> Get([FromQuery] Guid postId) => Ok(
-        await Service.FindById(postId)
-    );
+    [HttpGet("{postId:guid}")]
+    public async Task<IActionResult> Get([FromQuery] Guid postId)
+    {
+        var post = await Service.Get(postId);
+
+        return Ok(new
+        {
+            success = true,
+            post = Mapper.Map<PostDetailResponseDto>(post)
+        });
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateEditPostRequestDto dto)
     {
-        // needed to store with file mangement dto.UploadedImages;
         var post = Mapper.Map<Post>(dto);
-        var createdPost = Service.Crate(post);
-        var postResponse = Mapper.Map<CreateEditPostResponseDto>(post);
+        var createdPost = await Service.Add(UserId, post);
+        var postResponse = Mapper.Map<PostDetailResponseDto>(createdPost);
 
-        // var user = _userService.
-        
-        return Ok(postResponse);
+        return CreatedAtAction("Get", new
+        {
+            sucess = true,
+            post = postResponse
+        });
     }
 
-    [HttpPut("/{postId:guid}")]
-    public async Task<IActionResult> Update(Guid postId, [FromBody] CreateEditPostResponseDto dto)
+    [HttpPatch("{postId:guid}")]
+    public async Task<IActionResult> Update(Guid postId, [FromBody] CreateEditPostRequestDto dto)
     {
         var post = Mapper.Map<Post>(dto);
-        var updatedPost = Service.Update(postId, post);
-        var postResponse = Mapper.Map<CreateEditPostResponseDto>(updatedPost);
+        var updatedPost = await Service.Edit(postId, post);
+        var postResponse = Mapper.Map<PostDetailResponseDto>(updatedPost);
 
-        return Ok(postResponse);
+        return Ok(new
+        {
+            sucess = true,
+            post = postResponse
+        });
     }
 
     [HttpDelete("{postId:guid}")]
     public async Task<IActionResult> Delete(Guid postId)
     {
-        Service.Remove(postId);
-        return Ok("Post Deleted Successfully");
+        var isDeleted = Service.Delete(postId);
+        return isDeleted is false
+            ? NotFound("Post with this Id not Found")
+            : Ok(new { success = true, message = "Post Deleted Successfully" });
     }
 }

@@ -12,7 +12,7 @@ public class UpdateUserResponseDto
 {
 }
 
-public class GetUserMinimalResponseDto
+public class UserResponseDto
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = null!;
@@ -21,12 +21,8 @@ public class GetUserMinimalResponseDto
     public DateTime BirthDate { get; set; }
 }
 
-public class UserDetailsDtoResponse
+public class UserDetailDtoResponse : UserResponseDto
 {
-    public Guid Id { get; set; }
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public DateTime BirthDate { get; set; }
     public ICollection<Order>? Orders { get; set; }
     public ICollection<Review>? Reviews { get; set; }
     public ICollection<User>? Blacklist { get; set; }
@@ -34,9 +30,9 @@ public class UserDetailsDtoResponse
     public ICollection<Chat>? Chats { get; set; }
     public ICollection<User>? Following { get; set; }
     public ICollection<User>? Followers { get; set; }
-    public ProfilePicture? Picture { get; set; }
     public Guid? CartId { get; set; }
     public Cart? Cart { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    // public DateTime? UpdatedAt { get; set; }
 }
+

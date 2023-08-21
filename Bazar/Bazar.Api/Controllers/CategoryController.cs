@@ -2,6 +2,7 @@ using AutoMapper;
 using Bazar.Api.Controllers.Base;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
+using Bazar.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,13 +24,13 @@ public class CategoryController : BaseController<CategoryController, ICategorySe
     }
 
     [HttpPost]
-    public Task<IActionResult> Create(CreateCategoryRequestDto dto)
+    public Task<IActionResult> Create(CreateEditCategoryRequestDto dto)
     {
         throw new NotImplementedException();
     }
 
     [HttpPatch("{id:guid}")]
-    public Task<IActionResult> Update(Guid id, UpdateCategoryRequestDto dto)
+    public Task<IActionResult> Update(Guid id, CreateEditCategoryRequestDto dto)
     {
         throw new NotImplementedException();
     }

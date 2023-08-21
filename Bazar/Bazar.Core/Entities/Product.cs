@@ -30,7 +30,9 @@ public class Product : BaseModel
     private bool Published { get; init; }
 
     // relationships 
-    
+
+    public Vendor Vendor { get; set; } = null!;
+    public ICollection<Post>? Posts { get; set; }
     public ICollection<ProductImage> Images { get; set; } = null!;
     public ICollection<Category> Categories { get; set; } = null!;
     public ICollection<Tag> Tags { get; set; } = null!;
@@ -46,5 +48,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder
             .Property(p => p.Id)
             .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+        builder.HasOne(product => product.Vendor)
+            .WithMany(vendor => vendor.Products)
+            .HasForeignKey("VendorId")
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -146,14 +146,21 @@ namespace Bazar.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
+                    b.Property<byte[]>("ICon")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -347,7 +354,8 @@ namespace Bazar.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -356,6 +364,9 @@ namespace Bazar.EF.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -369,6 +380,8 @@ namespace Bazar.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -407,7 +420,8 @@ namespace Bazar.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<int>("BuyNumber")
                         .HasColumnType("int");
@@ -441,9 +455,14 @@ namespace Bazar.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("VendorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CrafterId");
+
+                    b.HasIndex("VendorId");
 
                     b.ToTable("Products");
                 });
@@ -610,6 +629,10 @@ namespace Bazar.EF.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -691,6 +714,10 @@ namespace Bazar.EF.Migrations
                         .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Bazar.Core.Entities.UserRole", b =>
@@ -859,6 +886,13 @@ namespace Bazar.EF.Migrations
                     b.ToTable("UserUser");
                 });
 
+            modelBuilder.Entity("Bazar.Core.Entities.Vendor", b =>
+                {
+                    b.HasBaseType("Bazar.Core.Entities.User");
+
+                    b.HasDiscriminator().HasValue("Vendor");
+                });
+
             modelBuilder.Entity("Bazar.Core.Entities.Address", b =>
                 {
                     b.HasOne("Bazar.Core.Entities.User", "User")
@@ -993,11 +1027,19 @@ namespace Bazar.EF.Migrations
 
             modelBuilder.Entity("Bazar.Core.Entities.Post", b =>
                 {
+                    b.HasOne("Bazar.Core.Entities.Product", "Product")
+                        .WithMany("Posts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Bazar.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
@@ -1021,7 +1063,15 @@ namespace Bazar.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Bazar.Core.Entities.Vendor", "Vendor")
+                        .WithMany("Products")
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Crafter");
+
+                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("Bazar.Core.Entities.ProductImage", b =>
@@ -1213,6 +1263,8 @@ namespace Bazar.EF.Migrations
                 {
                     b.Navigation("Images");
 
+                    b.Navigation("Posts");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("Tags");
@@ -1238,6 +1290,11 @@ namespace Bazar.EF.Migrations
                     b.Navigation("Roles");
 
                     b.Navigation("Wishlist");
+                });
+
+            modelBuilder.Entity("Bazar.Core.Entities.Vendor", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

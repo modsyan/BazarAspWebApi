@@ -19,39 +19,29 @@ namespace Bazar.Api.Controllers
     [AllowAnonymous]
     public class ProductsController : BaseController<ProductsController, IProductService>
     {
-
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(
-            await Service.GetAll()
-        );
+        public async Task<IActionResult> Get()
+        {
+            var products = Mapper.Map<ProductResponseDto>(Service.GetAll(UserId));
+            return Ok(new { sucess = true, products });
+        }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Get(Guid id) => Ok(
-            await Service.GetById(id)
-        );
+        [HttpGet("{productId:guid}")]
+        public async Task<IActionResult> Get(Guid productId)
+        {
+            var post = await Service.Get(productId);
 
-
-        [HttpGet("Search{query}")]
-        public IActionResult GetByName([FromBody] string name, string query) => Ok(
-            Service.FindByName(name)
-        );
-
-
-        [HttpGet("FindFirstByNameAsync")]
-        public async Task<IActionResult> FindFirstByNameAsync(string name) => Ok(
-        );
-
-        [HttpGet("FindAllByName")]
-        public IActionResult FindAllByName(string name) => Ok(
-        );
-
-
-        [HttpGet("FindAllByNameAsync")]
-        public async Task<IActionResult> FindAllByNameAsync(string name) => Ok(
-        );
+            return post is null
+                ? NotFound("Product with this id not found")
+                : Ok(new
+                {
+                    sucess = true, product =
+                        Mapper.Map<ProductDetailResponseDto>(post)
+                });
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProductRequestDto product)
+        public async Task<IActionResult> Create([FromBody] CreateEditProductRequestDto product)
         {
             // var userId = User?.Claims.FirstOrDefault();
             return Ok("Hello");

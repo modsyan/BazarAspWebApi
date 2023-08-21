@@ -16,8 +16,8 @@ public class User : IdentityUser<Guid>
     [DatabaseGenerated((DatabaseGeneratedOption.Identity))]
     public override Guid Id { get; set; }
 
-    [Required, MaxLength(50)] public required string FirstName { get; set; }
-    [Required, MaxLength(50)] public required string LastName { get; set; }
+    [Required, MaxLength(50)] public string FirstName { get; set; }
+    [Required, MaxLength(50)] public string LastName { get; set; }
 
     public DateTime BirthDate { get; set; }
 

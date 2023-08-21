@@ -31,5 +31,8 @@ public static class EntityConfigurationRegistrar
         new UserConfiguration().Configure(modelBuilder.Entity<User>());
         
         new BlockConfiguration().Configure(modelBuilder.Entity<Block>());
+        new PostConfiguration().Configure(modelBuilder.Entity<Post>());
+        new VendorConfiguration().Configure(modelBuilder.Entity<Vendor>());
+        new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
     }
 }

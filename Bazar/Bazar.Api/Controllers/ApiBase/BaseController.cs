@@ -1,7 +1,6 @@
 using System.Net;
 using System.Security.Claims;
 using AutoMapper;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,14 +1,13 @@
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 
 namespace Bazar.Api.Services;
 
-public class CartService : BaseService, ICartService
+public class CartService : BaseService<CartService>, ICartService
 {
-    public CartService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public CartService(IUnitOfWork unitOfWork, ILogger<CartService> logger) : base(unitOfWork, logger)
     {
     }
 

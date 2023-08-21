@@ -33,7 +33,7 @@ public static class DependencyInjectionsInitializer
     public static IServiceCollection TransitServicesRegistrar(this IServiceCollection services)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
-        
+
         services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddTransient<GlobalExceptionMiddleware>();
 
@@ -45,10 +45,10 @@ public static class DependencyInjectionsInitializer
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IProductService, ProductService>();
         services.AddTransient<IFaqService, FaqService>();
-        
+
         services.AddTransient<IAddressService, AddressService>();
-        services.AddTransient<IBlockService, BlockServices>();
-        
+        services.AddTransient<IBlockService, BlockService>();
+
         return services;
     }
 

@@ -3,57 +3,33 @@ using Bazar.Core.Models;
 
 namespace Bazar.Core.DTOs;
 
-public class CreateProductRequestDto
+public class CreateEditProductRequestDto
 {
-    public string Name { get; set; }
-    public double RegularPrice { get; set; }
+    public string Title { get; set; } = null!;
+    public string Content { get; set; } = null!;
+    public Guid ProductId { get; set; }
+    public ICollection<PostImage> Images { get; set; } = null!;
 }
 
-public class CreateProductResponseDto
+public class ProductResponseDto
 {
-    public string Title { get; set; }
-
+    public Guid Id { get; set; }
+    public string Title { get; set; } = null!;
+    public string ShortDescription { get; set; } = null!;
     public double RegularPrice { get; set; }
-
-    public List<string> Images { get; set; }
-
     public double? DiscountPrice { get; set; }
+    public byte[] PrimaryImage { get; set; } = null!;
 
-    public string ShortDescription { get; set; }
+    //TODO:TOTAL PRICE AFTER DISCOUNT
+    //TODO:CREATE MINIMALDTO AND DETAILDTO IN ALL DTOS 
+}
 
+public class ProductDetailResponseDto : ProductResponseDto
+{
+    public UserResponseDto User { get; set; } = null!;
+    public List<byte[]> SubImages { get; set; } = null!;
     public string? Description { get; set; }
-
-    public ICollection<Category>? Categories { get; set; }
-}
-
-public class UpdateProductRequestDto
-{
-}
-
-public class UpdateProductResponseDto
-{
-}
-
-public class GetProductRequest
-{
-}
-
-public class GetProductResponse
-{
-}
-
-public class GetAllProductRequest
-{
-}
-
-public class GetAllProductResponse
-{
-}
-
-public class DeleteProductRequestDto
-{
-}
-
-public class DeleteProductResponseDto
-{
+    public List<Category>? Categories { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

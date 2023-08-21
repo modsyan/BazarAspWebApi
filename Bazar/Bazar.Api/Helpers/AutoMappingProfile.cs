@@ -14,17 +14,18 @@ public class AutoMappingProfile : Profile
         CreateMap<RegisterUserRequestDto, User>();
         CreateMap<User, RegisterUserResponseDto>();
         CreateMap<User, LoginUserResponseDto>();
-        CreateMap<User, GetUserMinimalResponseDto>();
+        CreateMap<User, UserResponseDto>();
 
 
         //PRODUCTS
-        CreateMap<CreateProductRequestDto, Product>();
-        CreateMap<Product, CreateProductResponseDto>();
+        CreateMap<CreateEditProductRequestDto, Product>();
+        CreateMap<Product, ProductDetailResponseDto>();
+        CreateMap<Product, ProductResponseDto>();
 
         //POSTS
         CreateMap<CreateEditPostRequestDto, Post>();
-        CreateMap<Post, CreateEditPostResponseDto>();
-        CreateMap<Post, GetPostResponseDto>();
+        CreateMap<Post, PostResponseDto>();
+        CreateMap<Post, PostDetailResponseDto>();
 
         //FAQS
 

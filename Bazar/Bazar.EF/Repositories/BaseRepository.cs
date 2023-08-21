@@ -234,7 +234,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public T Attach(T entity)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<T>().Attach(entity);
     }
 
     public IEnumerable<T> AttachRange(IEnumerable<T> entities)

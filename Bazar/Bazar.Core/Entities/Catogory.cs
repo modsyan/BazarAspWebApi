@@ -7,12 +7,10 @@ namespace Bazar.Core.Entities;
 
 public class Category : BaseModel
 {
-    public Category(string name)
-    {
-        Name = name;
-    }
 
-    [Required, MaxLength(100)] public string Name { get; set; }
+    [Required] public string Name { get; set; } = null!;
+    [Required] public byte[] ICon { get; set; } = null!;
+    [Required] public string Color { get; set; } = null!;
 
     public ICollection<Product> Products { get; set; }
 }

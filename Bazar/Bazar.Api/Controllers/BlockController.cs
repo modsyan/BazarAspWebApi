@@ -15,7 +15,7 @@ public class BlockController : BaseController<BlockController, IBlockService>
     public async Task<IActionResult> Get()
     {
         var blockedUsers = (await Service.GetBlocked(UserId)).Select(block =>
-            Mapper.Map<GetUserMinimalResponseDto>(block.BlockedUser)).ToList();
+            Mapper.Map<UserResponseDto>(block.BlockedUser)).ToList();
 
         return Ok(new { success = true, users = blockedUsers, });
     }

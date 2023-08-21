@@ -1,63 +1,48 @@
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 
 namespace Bazar.Api.Services;
 
-public class ProductService : BaseService, IProductService
+public class ProductService : BaseService<ProductService>, IProductService
 {
-    public ProductService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public ProductService(IUnitOfWork unitOfWork, ILogger<ProductService> logger) : base(unitOfWork, logger)
     {
     }
 
-    public async Task<Product?> GetById(Guid id)
+    public async Task<IEnumerable<Product>> GetAll(Guid userId)
+    {
+        return await UnitOfWork.Products.GetAsync();
+    }
+    
+    public async Task<Product?> Get(Guid id)
     {
         return await UnitOfWork.Products.GetAsync(id);
     }
 
-    public async Task<IEnumerable<Product?>> GetAll()
+    public async Task<Product> Add(Guid ownerUserId,Product product)
     {
-        return await UnitOfWork.Products.GetAsync();
+       // product.vendorId = 
+        var createdProduct = await UnitOfWork.Products.CreateAsync(product);
+        await UnitOfWork.CompleteAsync();
+        return createdProduct;
     }
 
-    public async Task<Product?> FindByName(string title)
+    public async Task<Product> Edit(Guid productId,Product product)
     {
-        return await UnitOfWork.Products.FindFirstAsync(e => e.Title == title);
+        var updatedProduct = UnitOfWork.Products.Update(product);
+        await UnitOfWork.CompleteAsync();
+        return updatedProduct;
     }
 
-    public async Task<IEnumerable<Product?>> FindAllByName(string title)
+    public bool Delete(Guid productId)
     {
-        return await UnitOfWork.Products.FindAllAsync(e => e.Title == title);
+        return UnitOfWork.Products.Delete(productId);
     }
 
-    public Product Create(Product product)
+    public async Task<IEnumerable<Product>> DeleteRange(List<Guid> productIds)
     {
-        return UnitOfWork.Products.Create(product);
-    }
-
-    public Product Update(Product product)
-    {
-        return UnitOfWork.Products.Update(product)!;
-    }
-
-    public void Delete(Guid id)
-    {
-        UnitOfWork.Products.Delete(id);
-    }
-
-    public void DeleteByPrice(double price)
-    {
-        UnitOfWork.Products.Delete(p => p.RegularPrice == price);
-    }
-
-    public void Delete(Product product)
-    {
-        UnitOfWork.Products.Delete(product);
-    }
-
-    public void DeleteRange(Product product)
-    {
-        UnitOfWork.Products.Delete(product);
+        // UnitOfWork.Products.Delete(product);
+        throw new NotImplementedException();
     }
 }

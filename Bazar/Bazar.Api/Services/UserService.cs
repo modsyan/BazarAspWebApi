@@ -1,14 +1,14 @@
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ILogger = NuGet.Common.ILogger;
 
 namespace Bazar.Api.Services;
 
-public class UserService : BaseService, IUserService
+public class UserService : BaseService<UserService>, IUserService
 {
-    public UserService(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public UserService(IUnitOfWork unitOfWork, ILogger<UserService> logger) : base(unitOfWork, logger)
     {
     }
 

@@ -16,6 +16,7 @@ namespace Bazar.Api.Controllers;
 public class AddressController : BaseController<AddressController, IAddressService>
 {
     private readonly IUserService _userService;
+
     public AddressController(IUserService userService)
     {
         _userService = userService;
@@ -24,7 +25,7 @@ public class AddressController : BaseController<AddressController, IAddressServi
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var addresses = await Service.GetUserAddress(UserId);
+        var addresses = await Service.GetAll(UserId);
 
         var addressesResponse = addresses
             .Select(a =>
@@ -40,7 +41,7 @@ public class AddressController : BaseController<AddressController, IAddressServi
     [HttpGet("{addressId:guid}")]
     public async Task<IActionResult> Get(Guid addressId)
     {
-        var address = await Service.GetAddress(addressId);
+        var address = await Service.Get(addressId);
         return address is null
             ? NotFound(new
             {
@@ -59,7 +60,7 @@ public class AddressController : BaseController<AddressController, IAddressServi
     // [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> GetUserAddresses(Guid userId)
     {
-        var addresses = (await Service.GetUserAddress(userId)).ToList();
+        var addresses = (await Service.GetAll(userId)).ToList();
 
         if (addresses.IsNullOrEmpty())
             return NotFound(new { status = false, message = "there is no addresses to get" });
@@ -78,15 +79,9 @@ public class AddressController : BaseController<AddressController, IAddressServi
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddressDto dto)
     {
-        var mappedAddress = Mapper.Map<Address>(dto);
-
-        var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier) ??
-                              throw new AggregateException("userId not found, login again."));
-
-        mappedAddress.User = await _userService.Get(userId) ??
-                             throw new AggregateException("user not found, login again.");
-
-        var createdAddress = await Service.Add(mappedAddress);
+        var address = Mapper.Map<Address>(dto);
+        // mappedAddress.User = await _userService.Get(UserId);
+        var createdAddress = await Service.Add(UserId, address);
 
         return CreatedAtAction(
             "Get", new { id = createdAddress.Id, },
@@ -123,43 +118,43 @@ public class AddressController : BaseController<AddressController, IAddressServi
             });
     }
 
-    [HttpDelete("~/api/users/{userId:guid}/address")]
-    public async Task<IActionResult> DeleteAllUserAddresses(Guid userId)
-    {
-        // Todo: throw notfound and badRequest exceptions from services direct after handling Global exception Middleware 
-        var deletedUserAddresses = (await Service.DeleteUserAddresses(userId)).ToList();
+    // [HttpDelete("~/api/users/{userId:guid}/address")]
+    // public async Task<IActionResult> DeleteAllUserAddresses(Guid userId)
+    // {
+    //     // Todo: throw notfound and badRequest exceptions from services direct after handling Global exception Middleware 
+    //     var deletedUserAddresses = (await Service.DeleteAll(userId)).ToList();
+    //
+    //     return deletedUserAddresses.IsNullOrEmpty()
+    //         ? NotFound(new
+    //         {
+    //             success = false,
+    //             message = "There is no addresses to delete"
+    //         })
+    //         : Ok(new
+    //         {
+    //             success = true,
+    //             deletedAddresses = deletedUserAddresses
+    //         });
+    // }
 
-        return deletedUserAddresses.IsNullOrEmpty()
-            ? NotFound(new
-            {
-                success = false,
-                message = "There is no addresses to delete"
-            })
-            : Ok(new
-            {
-                success = true,
-                deletedAddresses = deletedUserAddresses
-            });
-    }
 
-
-    [HttpDelete]
-    public async Task<IActionResult> DeleteMyAddresses()
-    {
-        var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-        var deletedUserAddresses = (await Service.DeleteUserAddresses(userId)).ToList();
-
-        return deletedUserAddresses.IsNullOrEmpty()
-            ? NotFound(new
-            {
-                success = false,
-                message = "There is no addresses to delete"
-            })
-            : Ok(new
-            {
-                success = true,
-                deletedAddresses = deletedUserAddresses
-            });
-    }
+    // [HttpDelete]
+    // public async Task<IActionResult> DeleteMyAddresses()
+    // {
+    //     var userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+    //
+    //     var deletedUserAddresses = (await Service.DeleteAll(userId)).ToList();
+    //
+    //     return deletedUserAddresses.IsNullOrEmpty()
+    //         ? NotFound(new
+    //         {
+    //             success = false,
+    //             message = "There is no addresses to delete"
+    //         })
+    //         : Ok(new
+    //         {
+    //             success = true,
+    //             deletedAddresses = deletedUserAddresses
+    //         });
+    // }
 }

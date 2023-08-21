@@ -1,21 +1,19 @@
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 
 namespace Bazar.Api.Services;
 
-public class AddressService : BaseService, IAddressService
+public class AddressService : BaseService<AddressService>, IAddressService
 {
-    private readonly ILogger<AddressService> _logger;
-
-    public AddressService(IUnitOfWork unitOfWork, ILogger<AddressService> logger): base(unitOfWork)
+    public AddressService(IUnitOfWork unitOfWork, ILogger<AddressService> logger) : base(unitOfWork, logger)
     {
-        _logger = logger;
     }
 
-    public async Task<Address> Add(Address address)
+    public async Task<Address> Add(Guid ownerUserId, Address address)
     {
+        address.User = await UnitOfWork.Users.GetAsync(ownerUserId) ??
+                       throw new AggregateException("User not found."); //TODO: NEEDED TO BE REMOVED FROM HERE
         var createdAddress = await UnitOfWork.Addresses.CreateAsync(address);
         await UnitOfWork.CompleteAsync();
         return createdAddress;
@@ -30,34 +28,17 @@ public class AddressService : BaseService, IAddressService
         // PropertiesMapper.UpdateProperties(address, existingAddress);
 
         // Bad Mapping TODO: change mapping
-        existingAddress.Country = address.Country;
-        existingAddress.City = address.City;
-        existingAddress.StreetAddress = existingAddress.StreetAddress;
-        existingAddress.ZipCode = address.ZipCode;
-        existingAddress.Latitude = address.Latitude;
-        existingAddress.Longitude = address.Longitude;
+        // existingAddress.Country = address.Country;
+        // existingAddress.City = address.City;
+        // existingAddress.StreetAddress = existingAddress.StreetAddress;
+        // existingAddress.ZipCode = address.ZipCode;
+        // existingAddress.Latitude = address.Latitude;
+        // existingAddress.Longitude = address.Longitude;
+
+        UnitOfWork.Addresses.Attach(address);
 
         await UnitOfWork.CompleteAsync();
         return existingAddress;
-    }
-
-    public async Task<Address?> GetAddress(Guid addressId)
-    {
-        return await UnitOfWork.Addresses.GetAsync(addressId);
-    }
-
-    public async Task<IEnumerable<Address>> GetUserAddress(Guid userId)
-    {
-        return await UnitOfWork.Addresses.FindAllAsync(address =>
-            address.User != null && address.User.Id == userId);
-    }
-
-    public async Task<IEnumerable<Address>> DeleteUserAddresses(Guid userId)
-    {
-        var deletedAddresses = (await UnitOfWork.Addresses.FindAllAsync(a => a.User.Id == userId)).ToList();
-        UnitOfWork.Addresses.DeleteRange(deletedAddresses);
-        await UnitOfWork.CompleteAsync();
-        return deletedAddresses;
     }
 
     public bool Delete(Guid addressId)
@@ -65,5 +46,25 @@ public class AddressService : BaseService, IAddressService
         if (!UnitOfWork.Addresses.Delete(addressId)) return false;
         UnitOfWork.CompleteAsync();
         return true;
+    }
+
+    public async Task<Address> Get(Guid addressId)
+    {
+        return await UnitOfWork.Addresses.GetAsync(addressId) ??
+               throw new AggregateException("FIXME:Handling null here.");
+    }
+
+    public async Task<IEnumerable<Address>> GetAll(Guid userId)
+    {
+        return await UnitOfWork.Addresses.FindAllAsync(address =>
+            address.User != null && address.User.Id == userId);
+    }
+
+    public async Task<IEnumerable<Address>> DeleteAll(Guid userId)
+    {
+        var deletedAddresses = (await UnitOfWork.Addresses.FindAllAsync(a => a.User.Id == userId)).ToList();
+        UnitOfWork.Addresses.DeleteRange(deletedAddresses);
+        await UnitOfWork.CompleteAsync();
+        return deletedAddresses;
     }
 }

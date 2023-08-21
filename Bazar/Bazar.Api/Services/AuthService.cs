@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Bazar.Api.Helpers;
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
@@ -13,13 +12,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Bazar.Api.Services;
 
-public class AuthService : BaseService, IAuthService
+public class AuthService : BaseService<AuthService>, IAuthService
 {
     private readonly JwtOptions _jwt;
     private readonly UserManager<User> _userManger;
 
     public AuthService(IUnitOfWork unitOfWork, UserManager<User> userManager, IOptions<JwtOptions> jwt,
-        UserManager<User> userManger) : base(unitOfWork)
+        UserManager<User> userManger, ILogger<AuthService> logger) : base(unitOfWork, logger)
     {
         _userManger = userManger;
         _jwt = jwt.Value;
@@ -28,13 +27,13 @@ public class AuthService : BaseService, IAuthService
     public async Task<User> Register(User user, string password)
     {
         // TODO: USE MANGER TO ONLY USE UNIQUELY EMAIL AND USERNAME
-        // if (user.Email != null && await _userManager.FindByEmailAsync(user.Email) is not null)
-        //     return new 
-
+        // if (user.Email != null && await _userManager.FindByEmailAsync(user.Email) is not null) return new
+        
         user.PasswordHash = HashingPassword.Hash(password);
         var createdUser = await UnitOfWork.Users.CreateAsync(user);
         await UnitOfWork.CompleteAsync();
 
+        // TODO:REMOVE ALL ARGUMENT EXCEPTION WITH BETTER EXCEPTION HANDLING WITH STATUS CODES
         if (createdUser == null)
             throw new ArgumentException("Cannot Register new account, please try again.");
         return createdUser;

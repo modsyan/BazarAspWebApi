@@ -1,14 +1,13 @@
 using Bazar.Api.Services.Contracts;
-using Bazar.Api.Services.Contracts.Base;
 using Bazar.Core.Entities;
 using Bazar.Core.Interfaces;
 using Bazar.Core.Models;
 
 namespace Bazar.Api.Services;
 
-public class FaqService : BaseService, IFaqService
+public class FaqService : BaseService<FaqService>, IFaqService
 {
-    public FaqService(IUnitOfWork unitOfWork): base(unitOfWork)
+    public FaqService(IUnitOfWork unitOfWork, ILogger<FaqService> logger) : base(unitOfWork, logger)
     {
     }
 

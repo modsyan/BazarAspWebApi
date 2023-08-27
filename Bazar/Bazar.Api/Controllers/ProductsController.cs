@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
+using Bazar.Core.Entities;
 using Bazar.Core.Models;
 using Bazar.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,9 @@ namespace Bazar.Api.Controllers
 {
     // [Authorize(AuthenticationSchemes = "Bearer")]
     [AllowAnonymous]
-    public class ProductsController : BaseController<ProductsController, IProductService>
+    public class ProductsController
+        : CrudController<ProductsController, IProductService, Product,
+            CreateEditProductRequestDto, ProductResponseDto>
     {
         [HttpGet]
         public async Task<IActionResult> Get()

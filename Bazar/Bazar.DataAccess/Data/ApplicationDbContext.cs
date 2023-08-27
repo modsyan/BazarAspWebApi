@@ -1,5 +1,6 @@
 using Bazar.Core.Configurations;
 using Bazar.Core.Entities;
+using Bazar.EF.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -6,7 +6,8 @@ namespace Bazar.Api.Services;
 
 public class AddressService : BaseService<AddressService>, IAddressService
 {
-    public AddressService(IUnitOfWork unitOfWork, ILogger<AddressService> logger) : base(unitOfWork, logger)
+    public AddressService(IUnitOfWork unitOfWork, ILogger<AddressService> logger)
+        : base(unitOfWork, logger)
     {
     }
 
@@ -28,14 +29,14 @@ public class AddressService : BaseService<AddressService>, IAddressService
         // PropertiesMapper.UpdateProperties(address, existingAddress);
 
         // Bad Mapping TODO: change mapping
-        // existingAddress.Country = address.Country;
-        // existingAddress.City = address.City;
-        // existingAddress.StreetAddress = existingAddress.StreetAddress;
-        // existingAddress.ZipCode = address.ZipCode;
-        // existingAddress.Latitude = address.Latitude;
-        // existingAddress.Longitude = address.Longitude;
+        existingAddress.Country = address.Country;
+        existingAddress.City = address.City;
+        existingAddress.StreetAddress = existingAddress.StreetAddress;
+        existingAddress.ZipCode = address.ZipCode;
+        existingAddress.Latitude = address.Latitude;
+        existingAddress.Longitude = address.Longitude;
 
-        UnitOfWork.Addresses.Attach(address);
+        // UnitOfWork.Addresses.Update(address);
 
         await UnitOfWork.CompleteAsync();
         return existingAddress;

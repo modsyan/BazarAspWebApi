@@ -1,7 +1,7 @@
 using Bazar.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bazar.Core.Configurations;
+namespace Bazar.EF.Configurations;
 
 public static class EntityConfigurationRegistrar
 {

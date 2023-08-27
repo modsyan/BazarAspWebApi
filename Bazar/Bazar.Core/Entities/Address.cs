@@ -7,11 +7,12 @@ namespace Bazar.Core.Entities;
 
 public class Address : BaseModel
 {
-    [Required] public User? User { get; set; } = null!;
-    [Required] public string Country { get; set; }
-    [Required] public string City { get; set; }
-    [Required] public string StreetAddress { get; set; }
-    [Required] public string ZipCode { get; set; }
+    [Required] public Guid UserId { get; set; }
+    [Required] public User User { get; set; } = null!;
+    [Required] public string Country { get; set; } = null!;
+    [Required] public string City { get; set; } = null!;
+    [Required] public string StreetAddress { get; set; } = null!;
+    [Required] public string ZipCode { get; set; } = null!;
     [Required] public double Longitude { get; set; }
     [Required] public double Latitude { get; set; }
 }

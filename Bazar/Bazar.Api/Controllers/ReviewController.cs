@@ -1,5 +1,5 @@
 using AutoMapper;
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;

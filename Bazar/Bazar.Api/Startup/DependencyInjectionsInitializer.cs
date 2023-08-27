@@ -1,5 +1,4 @@
 using Bazar.Api.Controllers;
-using Bazar.Api.Controllers.Base;
 using Bazar.Api.Helpers;
 using Bazar.Api.Middlewares;
 using Bazar.Api.Services;

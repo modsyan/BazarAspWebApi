@@ -1,4 +1,4 @@
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Bazar.Api.Services.Contracts;
 
 namespace Bazar.Api.Controllers;

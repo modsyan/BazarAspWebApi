@@ -234,7 +234,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public T Attach(T entity)
     {
-        _dbContext.Set<T>().Attach(entity);
+        // var attachedEntityEntry = _dbContext.Set<T>().Attach(entity);
+        // var attached = attachedEntityEntry.Properties.Select(p=>p.IsModified = true);
+        // return ;
+        throw new NotImplementedException();
     }
 
     public IEnumerable<T> AttachRange(IEnumerable<T> entities)

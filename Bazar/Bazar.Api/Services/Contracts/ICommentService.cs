@@ -1,5 +1,7 @@
+using Bazar.Core.Entities;
+
 namespace Bazar.Api.Services.Contracts;
 
-public interface ICommentService
+public interface ICommentService : ICrudService<Comment>
 {
 }

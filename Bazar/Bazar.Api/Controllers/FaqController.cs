@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoMapper.Internal.Mappers;
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.Constants;
 using Bazar.Core.DTOs;

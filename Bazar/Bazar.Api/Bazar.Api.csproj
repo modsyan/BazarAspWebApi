@@ -46,11 +46,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bazar.EF\Bazar.EF.csproj" />
+    <ProjectReference Include="..\Bazar.DataAccess\Bazar.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Utilities\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Wrapper\" />
   </ItemGroup>
 
 </Project>

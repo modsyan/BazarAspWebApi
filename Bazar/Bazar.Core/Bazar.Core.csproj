@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Entities\Base\" />
       <Folder Include="Localization\SourceFiles\" />
     </ItemGroup>
 

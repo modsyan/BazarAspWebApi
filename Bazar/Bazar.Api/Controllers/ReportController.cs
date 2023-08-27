@@ -1,5 +1,5 @@
 using AutoMapper;
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Microsoft.AspNetCore.Authorization;

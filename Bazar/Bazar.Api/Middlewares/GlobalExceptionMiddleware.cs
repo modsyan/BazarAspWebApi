@@ -18,6 +18,10 @@ public class GlobalExceptionMiddleware : IMiddleware
         {
             await next(context);
         }
+        catch (ArgumentException argumentException)
+        {
+            
+        }
         catch (Exception e)
         {
             _logger.LogError(e, "Error Occured");
@@ -27,17 +31,14 @@ public class GlobalExceptionMiddleware : IMiddleware
 
     private static Task HandlerException(HttpContext context, Exception e)
     {
-        //TODO: make dynamic Internal code errors
-        const int statusCode = (int)HttpStatusCode.InternalServerError;
         var errorResponse = new ErrorModel
         {
-            StatusCode = statusCode,
+            Success = false,
             Message = e.Message,
-            Details = e.InnerException?.ToString(),
         };
 
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = statusCode;
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
         return context.Response.WriteAsync(errorResponse.ToString());
     }

@@ -1,19 +1,17 @@
-using System.Net;
 using System.Security.Claims;
 using AutoMapper;
-using Bazar.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bazar.Api.Controllers.Base;
+namespace Bazar.Api.Controllers.ApiBase;
 
 [ApiController]
 [Route("api/[controller]")]
-public abstract class BaseController<T, TService> : ControllerBase
-    where T : BaseController<T, TService>
+public abstract class BaseController<TController, TService> : ControllerBase
+    where TController : BaseController<TController, TService>
     where TService : notnull
 {
-    private IMapper? mapperrr;
-    private ILogger<T>? _logger;
+    private IMapper? _mapper;
+    private ILogger<TController>? _logger;
     private TService? _service;
 
     protected Guid UserId => new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier) ??
@@ -23,11 +21,11 @@ public abstract class BaseController<T, TService> : ControllerBase
         => _service ??= HttpContext.RequestServices.GetRequiredService<TService>();
 
     protected ILogger Logger
-        => _logger ??= HttpContext.RequestServices.GetRequiredService<ILogger<T>>();
+        => _logger ??= HttpContext.RequestServices.GetRequiredService<ILogger<TController>>();
 
     protected bool UserIsAuthenticated
         => HttpContext.User.Identity is { IsAuthenticated: true };
 
     protected IMapper Mapper
-        => mapperrr ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
+        => _mapper ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
 }

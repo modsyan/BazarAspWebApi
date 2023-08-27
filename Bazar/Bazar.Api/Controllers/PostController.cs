@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Bazar.Api.Services.Contracts;
 using Bazar.Core.DTOs;
 using Bazar.Core.Entities;

@@ -1,4 +1,4 @@
-using Bazar.Api.Controllers.Base;
+using Bazar.Api.Controllers.ApiBase;
 using Bazar.Api.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 

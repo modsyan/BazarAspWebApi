@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bazar.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230821150647_init")]
+    [Migration("20230822204830_init")]
     partial class init
     {
         /// <inheritdoc />
